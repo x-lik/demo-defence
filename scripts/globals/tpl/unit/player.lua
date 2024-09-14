@@ -1,0 +1,23 @@
+--- 玩家单位
+TPL_UNIT.Hero = UnitTpl("Beastmaster")
+    :preAbility({ TPL_ABILITY.ZZJY })
+    :name("兽王")
+    :model("Rexxar")
+    :weaponSound("metal_chop_heavy")
+    :move(300)
+    :attack(20)
+    :hp(200)
+
+--- 守护的基地
+TPL_UNIT.Base = UnitTpl('', "pathTex10x_ss")
+    :name("基地")
+    :model("TownHall")
+    :modelScale(1.00)
+    :scale(4.00)
+    :animateProperties({ "upgrade", "second" })
+    :preNoAttack()
+    :preNoAbilitySlot()
+    :preNoItemSlot()
+    :splat("ReplaceableTextures\\Splats\\HumanTownHallUberSplat.blp")
+    :collision(120)
+    :hp(10000)
