@@ -1278,7 +1278,7 @@ assets_model("buildings\\orc\\OrcBarracks\\OrcBarracks.mdl", "OrcBarracks")
 --战争磨坊
 assets_model("buildings\\orc\\WarMill\\WarMill.mdl", "WarMill")
 --牛头人图腾
-assets_model("buildings\\orc\TaurenTotem\\TaurenTotem.mdl", "TaurenTotem")
+assets_model("buildings\\orc\\TaurenTotem\\TaurenTotem.mdl", "TaurenTotem")
 --灵魂归宿
 assets_model("buildings\\orc\\SpiritLodge\\SpiritLodge.mdl", "SpiritLodge")
 --兽栏
