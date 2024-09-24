@@ -20,5 +20,5 @@ time.setInterval(1, function()
     local i, f = math.modf(timeOfDay)
     f = math.floor(59 * f)
     game.infoCenter = { tit, string.fill(i, 2, '0') .. ':' .. string.fill(f, 2, '0') }
-    UIKit("lik_menu"):updateInfo()
+    UIKit("lik_info"):updateInfo()
 end)
