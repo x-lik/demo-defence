@@ -79,7 +79,7 @@ game.onStart(function()
     ---@return boolean
     local abilityStart = function(ab)
         ---@type UI_LikPlate
-        local uiPlate = UIKit("lik_plate")
+        local uiPlate = UIKit("xlik_plate")
         uiPlate:buttonBorder(ab)
         return abilityCheck(ab)
     end
@@ -88,7 +88,7 @@ game.onStart(function()
         local ab = data.ability
         if (ab) then
             ---@type UI_LikPlate
-            local uiPlate = UIKit("lik_plate")
+            local uiPlate = UIKit("xlik_plate")
             uiPlate:buttonBorder(ab)
         end
     end

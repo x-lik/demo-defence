@@ -6,13 +6,13 @@ end
 
 ---@param evtData evtOnUnitCritData
 event.reactRegister(eventKind.unitCrit, function(evtData)
-    effector.attach(evtData.targetUnit, "lik_crit", "origin", 0.5)
+    effector.attach(evtData.targetUnit, "xlik_crit", "origin", 0.5)
 end)
 ---@param evtData evtOnUnitCritAbilityData
 event.reactRegister(eventKind.unitCritAbility, function(evtData)
-    effector.attach(evtData.targetUnit, "lik_crit_ability", "origin", 0.5)
+    effector.attach(evtData.targetUnit, "xlik_crit_ability", "origin", 0.5)
     mtg.model({
-        model = "lik_ttg_crit",
+        model = "xlik_ttg_crit",
         size = 1.4,
         x = evtData.targetUnit:x(),
         y = evtData.targetUnit:y(),
@@ -24,13 +24,13 @@ event.reactRegister(eventKind.unitCritAbility, function(evtData)
 end)
 ---@param evtData evtOnUnitAvoidData
 event.reactRegister(eventKind.unitAvoid, function(evtData)
-    effector.attach(evtData.triggerUnit, "lik_ttg_avoid", "overhead", 0.3)
+    effector.attach(evtData.triggerUnit, "xlik_ttg_avoid", "overhead", 0.3)
 end)
 ---@param evtData evtOnUnitImmuneInvincibleData
 event.reactRegister(eventKind.unitImmuneInvincible, function(evtData)
     effector.attach(evtData.triggerUnit, "DivineShieldTarget", "origin", 1)
     mtg.model({
-        model = "lik_ttg_immune_invincible",
+        model = "xlik_ttg_immune_invincible",
         size = 1.2,
         x = evtData.triggerUnit:x(),
         y = evtData.triggerUnit:y(),
@@ -42,7 +42,7 @@ end)
 ---@param evtData evtOnUnitImmuneDefendData
 event.reactRegister(eventKind.unitImmuneDefend, function(evtData)
     mtg.model({
-        model = "lik_ttg_immune_damage",
+        model = "xlik_ttg_immune_damage",
         size = 0.7,
         x = evtData.triggerUnit:x(),
         y = evtData.triggerUnit:y(),
@@ -54,7 +54,7 @@ end)
 ---@param evtData evtOnUnitImmuneReductionData
 event.reactRegister(eventKind.unitImmuneReduction, function(evtData)
     mtg.model({
-        model = "lik_ttg_immune_damage",
+        model = "xlik_ttg_immune_damage",
         size = 0.7,
         x = evtData.triggerUnit:x(),
         y = evtData.triggerUnit:y(),
@@ -66,7 +66,7 @@ end)
 ---@param evtData evtOnUnitImmuneEnchantData
 event.reactRegister(eventKind.unitImmuneEnchant, function(evtData)
     mtg.model({
-        model = "lik_ttg_immune_enchant",
+        model = "xlik_ttg_immune_enchant",
         size = 0.7,
         x = evtData.triggerUnit:x(),
         y = evtData.triggerUnit:y(),
@@ -142,17 +142,17 @@ end)
 ---@param evtData evtOnUnitEnchantData
 event.reactRegister(eventKind.unitEnchant, function(evtData)
     local m = {
-        [injury.damageType.fire.value] = "lik_ttg_e_fire",
-        [injury.damageType.water.value] = "lik_ttg_e_water",
-        [injury.damageType.ice.value] = "lik_ttg_e_ice",
-        [injury.damageType.rock.value] = "lik_ttg_e_rock",
-        [injury.damageType.wind.value] = "lik_ttg_e_wind",
-        [injury.damageType.light.value] = "lik_ttg_e_light",
-        [injury.damageType.dark.value] = "lik_ttg_e_dark",
-        [injury.damageType.grass.value] = "lik_ttg_e_grass",
-        [injury.damageType.thunder.value] = "lik_ttg_e_thunder",
-        [injury.damageType.poison.value] = "lik_ttg_e_poison",
-        [injury.damageType.steel.value] = "lik_ttg_e_steel",
+        [injury.damageType.fire.value] = "xlik_ttg_e_fire",
+        [injury.damageType.water.value] = "xlik_ttg_e_water",
+        [injury.damageType.ice.value] = "xlik_ttg_e_ice",
+        [injury.damageType.rock.value] = "xlik_ttg_e_rock",
+        [injury.damageType.wind.value] = "xlik_ttg_e_wind",
+        [injury.damageType.light.value] = "xlik_ttg_e_light",
+        [injury.damageType.dark.value] = "xlik_ttg_e_dark",
+        [injury.damageType.grass.value] = "xlik_ttg_e_grass",
+        [injury.damageType.thunder.value] = "xlik_ttg_e_thunder",
+        [injury.damageType.poison.value] = "xlik_ttg_e_poison",
+        [injury.damageType.steel.value] = "xlik_ttg_e_steel",
     }
     if (nil ~= m[evtData.enchantType.value]) then
         local u = evtData.triggerUnit
