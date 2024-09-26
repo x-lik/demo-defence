@@ -22,7 +22,7 @@ function process:onStart()
     for i = 1, 4, 1 do
         local p = Player(i)
         if (p:isPlaying()) then
-            local u = Unit(p, TPL_UNIT.Hero, 0, -250, 270)
+            local u = Unit(p, TPL_UNIT.Hero, 0, -2496 + 250, 90)
             u:reborn(10) -- 10秒复活
         end
     end
