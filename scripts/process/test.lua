@@ -29,7 +29,7 @@ function process:onStart()
     
     --- 敌人
     local enemy = Team("敌方", TEAM_COLOR_BLP_BLACK, true, true)
-    enemy:members({ 6, 7, 8, 9, 10, 11, 12 })
+    enemy:members({ 10, 11, 12 })
     local cur = 1 -- 当前波
     local wave = 100 -- 100波
     local period = 60 -- 初始周期
@@ -38,10 +38,14 @@ function process:onStart()
     local qty = 10 -- 每地点出怪数量
     -- 出怪地点
     local points = {
-        { -2678, 2334, -45 },
-        { 2562, 2393, 135 },
-        { -2745, -3142, 45 },
-        { 2434, -2943, 135 },
+        { 0, 2437, 270 }, -- 中
+        { -2740, -2502, 0 }, -- 左
+        { -2561, -2487, 180 }, -- 右
+    }
+    -- 刷怪地点
+    local fresh = {
+        { -2270, 2221, 180 },
+        { 2426, 2178, 0 },
     }
     time.setInterval(period, function(curTimer)
         cur = cur + 1
