@@ -7,7 +7,7 @@ function process:onStart()
     local bubble = self:bubble()
     
     --- 基地（友军玩家5）
-    bubble.base = Unit(Player(5), TPL_UNIT.Base, 0, 0, 270)
+    bubble.base = Unit(Player(5), TPL_UNIT.Base, 0, -2496, 270)
     
     --- 基地死亡则失败
     ---@param evtData evtOnUnitDeadData
@@ -38,9 +38,9 @@ function process:onStart()
     local qty = 10 -- 每地点出怪数量
     -- 出怪地点
     local points = {
-        { 0, 2437, 270 }, -- 中
-        { -2740, -2502, 0 }, -- 左
-        { -2561, -2487, 180 }, -- 右
+        { 0, 2432, 270 }, -- 中
+        { -2740, -2496, 0 }, -- 左
+        { -2561, -2496, 180 }, -- 右
     }
     -- 刷怪地点
     local fresh = {
