@@ -26,16 +26,16 @@ game.onStart(function()
             alpha = 255,
             width = 0.04,
             height = 0.04,
-            normal = X_UI_CURSOR_DRAG
+            normal = "interfaces/cursorDrag"
         },
         aim = {
             alpha = 255,
             width = 0.035,
             height = 0.035,
-            normal = X_UI_CURSOR_AIM_WHITE,
-            ally = X_UI_CURSOR_AIM_GREEN,
-            enemy = X_UI_CURSOR_AIM_RED,
-            neutral = X_UI_CURSOR_AIM_GOLD,
+            normal = "interfaces/cursorAimWhite",
+            ally = "interfaces/cursorAimGreen",
+            enemy = "interfaces/cursorAimRed",
+            neutral = "interfaces/cursorAimGold",
         },
         circle = nil,
         square = {
