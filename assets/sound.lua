@@ -1,4 +1,9 @@
 
+--【 打击音效 】
+
+assets_vwp("metal_heavy_chop")
+assets_vwp("wood_heavy_bash")
+
 --【 音效 】
 
 assets_vcm("Sound\\Interface\\Error.wav", "war3_Error")
