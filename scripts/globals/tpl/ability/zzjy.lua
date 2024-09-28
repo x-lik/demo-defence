@@ -16,7 +16,7 @@ TPL_ABILITY.ZZJY = AbilityTpl()
         Buff({
             key = "自在极意被动",
             object = tu,
-            icon = "ability/IncendiaryBonds",
+            icon = "icon/ability/IncendiaryBonds",
             description = "轻松躲躲躲",
             duration = 3,
             ---@param buffObj Unit
