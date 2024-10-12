@@ -46,7 +46,7 @@ game.onStart(function()
     }
     
     -- 设定一些值供临时使用
-    local _int1, _bool1
+    local _int1, _bool1, _timer1
     local _float1, _float2
     local _unitU, _unit1
     
@@ -78,6 +78,19 @@ game.onStart(function()
     ---@param ab Ability
     ---@return boolean
     local abilityStart = function(ab)
+        if (class.isObject(_timer1, TimerAsyncClass)) then
+            class.destroy(_timer1)
+            _timer1 = nil
+        end
+        local p = PlayerLocal()
+        local selection = p:selection()
+        if (nil ~= selection and selection:owner() == p) then
+            J.EnableSelect(false, false)
+            _timer1 = async.setTimeout(1, function()
+                J.SelectUnit(selection:handle(), true)
+                _timer1 = nil
+            end)
+        end
         ---@type UI_LikPlate
         local uiPlate = UIKit("xlik_plate")
         uiPlate:buttonBorder(ab)
@@ -91,6 +104,10 @@ game.onStart(function()
             local uiPlate = UIKit("xlik_plate")
             uiPlate:buttonBorder(ab)
         end
+        _timer1 = async.setTimeout(60, function()
+            J.EnableSelect(true, false)
+            _timer1 = nil
+        end)
     end
     
     -- 自定义默认指针逻辑
