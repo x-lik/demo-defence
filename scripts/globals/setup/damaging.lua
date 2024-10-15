@@ -180,9 +180,7 @@ damageFlow:flux("hurtRebound", function(data)
                             data.targetUnit:x(), data.targetUnit:y(), data.targetUnit:h(),
                             data.sourceUnit:x(), data.sourceUnit:y(), data.sourceUnit:h(),
                             lDur)
-                        time.setTimeout(lDelay, function()
-                            damagedArrived()
-                        end)
+                        time.setTimeout(lDelay, damagedArrived)
                     elseif (mode == "missile") then
                         ability.missile({
                             model = am:model(),
@@ -191,7 +189,7 @@ damageFlow:flux("hurtRebound", function(data)
                             speed = am:speed(),
                             height = am:height() / 4,
                             acceleration = am:acceleration(),
-                            onEnd = function() damagedArrived() end,
+                            onEnd = damagedArrived,
                         })
                     end
                 elseif (data.damageSrc == injury.damageSrc.ability) then
