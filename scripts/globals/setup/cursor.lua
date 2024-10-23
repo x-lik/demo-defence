@@ -68,8 +68,8 @@ game.onStart(function()
         circle = nil,
         square = {
             alpha = 150,
-            enable = TEAM_COLOR_BLP_LIGHT_BLUE,
-            disable = TEAM_COLOR_BLP_RED,
+            enable = BLP_COLOR_LIGHT_BLUE,
+            disable = BLP_COLOR_RED,
         },
     }
     
