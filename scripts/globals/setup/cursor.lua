@@ -1,5 +1,33 @@
 -- 指针配置
 game.onStart(function()
+    -- 自定义选择圈
+    J.EnableSelect(true, false)
+    local sel = Image("ReplaceableTextures\\Selection\\SelectionCircleLarge.blp", 72, 72):show(false)
+    japi.AsyncRefresh("csSel", function()
+        local o = PlayerLocal():selection()
+        if (class.isObject(o, UnitClass) and o:isAlive() and false == o:isLocust()) then
+            local s = 72 * o:scale()
+            if (s > 0) then
+                ---@type Image
+                sel:size(s, s)
+                sel:position(o:x(), o:y())
+                if (o:owner():handle() == player.localHandle) then
+                    sel:rgba(0, 255, 0, 255)
+                elseif (J.IsUnitEnemy(o:handle(), player.localHandle)) then
+                    sel:rgba(255, 0, 0, 255)
+                else
+                    sel:rgba(255, 255, 0, 255)
+                end
+                sel:show(true)
+            else
+                sel:show(false)
+            end
+        else
+            sel:show(false)
+        end
+    end)
+    
+    -- 自定义指针选取
     local csFollow = UIBackdrop("myFollow", UIGame):show(false) -- 跟踪比指针底层所以先定义
     local csPointer = UIBackdrop("myPointer", UIGame):adaptive(true):size(0.01, 0.01)
     local csArea = Image(X_UI_NIL, 16, 16):show(false)

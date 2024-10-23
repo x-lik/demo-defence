@@ -32,22 +32,22 @@ function process:onStart()
     enemy:members({ 10, 11, 12 })
     local cur = 1 -- 当前波
     local wave = 100 -- 100波
-    local period = 60 -- 初始周期
-    local per = 5 -- 每波缩短周期
-    local min = 30 -- 最小周期
-    local qty = 10 -- 每地点出怪数量
+    local period = 30 -- 初始周期
+    local per = 1 -- 每波缩短周期
+    local min = 10 -- 最小周期
+    local qty = 6 -- 每地点出怪数量
     -- 出怪地点
     local points = {
         { 0, 2432, 270 }, -- 中
         { -2740, -2496, 0 }, -- 左
-        { -2561, -2496, 180 }, -- 右
+        { 2561, -2496, 180 }, -- 右
     }
     -- 刷怪地点
     local fresh = {
         { -2270, 2221, 180 },
         { 2426, 2178, 0 },
     }
-    time.setInterval(period, function(curTimer)
+    bubble.monTimer = time.setInterval(period, function(curTimer)
         cur = cur + 1
         if (cur >= wave) then
             class.destroy(curTimer)
@@ -58,7 +58,7 @@ function process:onStart()
             curTimer:period(period)
         end
         local i = 0
-        time.setInterval(0.5, function(curTimer2)
+        bubble.monTimer2 = time.setInterval(1, function(curTimer2)
             i = i + 1
             if (i >= qty) then
                 class.destroy(curTimer2)
@@ -66,12 +66,21 @@ function process:onStart()
             end
             for _, p in ipairs(points) do
                 local u = Unit(enemy, TPL_UNIT.Empty, p[1], p[2], p[3])
-                u:orderAttack(0, 0)
+                u:orderAttack(0, -2496)
             end
         end)
+    end)
+    
+    local ui = UIText("monTimer", UIGame)
+        :relation(UI_ALIGN_TOP, UIGame, UI_ALIGN_TOP, 0, -0.07)
+        :textAlign(TEXT_ALIGN_CENTER)
+        :fontSize(12)
+    bubble.uiTimer = time.setInterval(1, function()
+        ui:text("下一波：" .. math.floor(bubble.monTimer:remain()))
     end)
 end
 
 function process:onOver()
     sound.bgmStop()
+    UIText("monTimer"):text("")
 end

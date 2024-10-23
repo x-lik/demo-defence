@@ -1,8 +1,8 @@
 
 --【 打击音效 】
 
-assets_vwp("metal_heavy_chop")
-assets_vwp("wood_heavy_bash")
+assets_vwp("metal_chop_heavy")
+assets_vwp("wood_bash_heavy")
 
 --【 音效 】
 
