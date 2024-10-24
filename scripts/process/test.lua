@@ -76,6 +76,7 @@ function process:onStart()
                 local diff = evtData.new - evtData.old
                 effector.attach(evtData.triggerUnit, "LevelupCaster", "chest", 1)
                 evtData.triggerUnit:attack("+=" .. 1 * diff)
+                evtData.triggerUnit:attackSpeed("+=0.1")
                 evtData.triggerUnit:hp("+=" .. 5 * diff)
                 evtData.triggerUnit:hpRegen("+=" .. 1 * diff)
             end)
@@ -93,8 +94,8 @@ function process:onStart()
     end)
     
     --- 敌人
-    local enemy = Team("敌方", 13, true, true)
-    enemy:members({ 10, 11, 12 })
+    local enemyTeam = Team("敌方", 13, true, true)
+    enemyTeam:members({ 10, 11, 12 })
     local cur = 1 -- 当前波
     local wave = 100 -- 100波
     local period = 30 -- 初始周期
@@ -125,7 +126,7 @@ function process:onStart()
                 return
             end
             for _, p in ipairs(points) do
-                local u = Unit(enemy, TPL_UNIT.Empty, p[1], p[2], p[3])
+                local u = Unit(enemyTeam, TPL_UNIT.Empty, p[1], p[2], p[3])
                 u:orderAttack(0, -2496)
                 u:hp("+=" .. cur)
                 u:attack("+=" .. cur / 3)
@@ -138,6 +139,18 @@ function process:onStart()
         :fontSize(12)
     bubble.uiTimer = time.setInterval(1, function()
         ui:text("第" .. cur .. "波：" .. math.floor(bubble.monTimer:remain()))
+    end)
+    
+    -- 敌人掉落
+    local dropList = { TPL_ITEM["短剑"], TPL_ITEM["木盾"] }
+    ---@param evtData evtOnUnitDeadData
+    event.reactRegister(eventKind.unitDead, "enemyDrop", function(evtData)
+        local tu = evtData.triggerUnit
+        if (enemyTeam:is(tu) and math.rand(1, 10) == 3) then
+            local x, y = tu:x(), tu:y()
+            local it = Item(table.rand(dropList, 1))
+            it:position(x, y)
+        end
     end)
     
     -- 刷怪地点

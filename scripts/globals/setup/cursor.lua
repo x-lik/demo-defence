@@ -103,9 +103,8 @@ game.onStart(function()
         end
         return true
     end
-    ---@param ab Ability
-    ---@return boolean
-    local abilityStart = function(ab)
+    --- cursor lock
+    local cursorLock = function()
         if (class.isObject(_timer1, TimerAsyncClass)) then
             class.destroy(_timer1)
             _timer1 = nil
@@ -119,6 +118,22 @@ game.onStart(function()
                 _timer1 = nil
             end)
         end
+    end
+    --- cursor unlock
+    local cursorUnLock = function()
+        if (class.isObject(_timer1, TimerAsyncClass)) then
+            class.destroy(_timer1)
+            _timer1 = nil
+        end
+        _timer1 = async.setTimeout(60, function()
+            J.EnableSelect(true, false)
+            _timer1 = nil
+        end)
+    end
+    ---@param ab Ability
+    ---@return boolean
+    local abilityStart = function(ab)
+        cursorLock()
         ---@type UI_LikPlate
         local uiPlate = UIKit("xlik_plate")
         uiPlate:buttonBorder(ab)
@@ -132,10 +147,7 @@ game.onStart(function()
             local uiPlate = UIKit("xlik_plate")
             uiPlate:buttonBorder(ab)
         end
-        _timer1 = async.setTimeout(60, function()
-            J.EnableSelect(true, false)
-            _timer1 = nil
-        end)
+        cursorUnLock()
     end
     
     -- 自定义默认指针逻辑
@@ -744,6 +756,7 @@ game.onStart(function()
     
     cursor.setQuote("follow", {
         start = function()
+            cursorLock()
             local data = cursor.currentData()
             ---@type Ability|Item
             local obj = data.object
@@ -799,6 +812,7 @@ game.onStart(function()
             end
         end,
         over = function()
+            cursorUnLock()
             csFollow:show(false)
             local data = cursor.currentData()
             data.over()
