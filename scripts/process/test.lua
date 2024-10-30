@@ -10,7 +10,7 @@ function process:onStart()
     bubble.base = Unit(Player(5), TPL_UNIT.Base, 0, -2496, 270)
     
     --- 基地死亡则失败
-    ---@param evtData evtOnUnitDeadData
+    ---@param evtData eventOnUnitDead
     bubble.base:onEvent(eventKind.unitDead, function(evtData)
         local tips = evtData.triggerUnit:name() .. "炸了"
         for i = 1, 4, 1 do
@@ -50,7 +50,7 @@ function process:onStart()
         if (p:isPlaying()) then
             local u = Unit(p, TPL_UNIT.Hero, 0, -2496 + 250, 90)
             u:reborn(10) -- 10秒复活
-            ---@param evtData evtOnUnitFeignDeadData
+            ---@param evtData eventOnUnitFeignDead
             u:onEvent(eventKind.unitFeignDead, "heroDead", function(evtData)
                 async.loc(function()
                     local icon = evtData.triggerUnit:icon()
@@ -60,18 +60,18 @@ function process:onStart()
                     end
                 end)
             end)
-            ---@param evtData evtOnUnitRebornData
+            ---@param evtData eventOnUnitReborn
             u:onEvent(eventKind.unitReborn, "heroReborn", function(evtData)
                 async.loc(function()
                     local icon = evtData.triggerUnit:icon()
                     avatar:texture(icon)
                 end)
             end)
-            ---@param evtData evtOnUnitKillData
+            ---@param evtData eventOnUnitKill
             u:onEvent(eventKind.unitKill, "heroKill", function(evtData)
                 evtData.triggerUnit:exp("+=30")
             end)
-            ---@param evtData evtOnUnitLevelChangeData
+            ---@param evtData eventOnUnitLevelChange
             u:onEvent(eventKind.unitLevelChange, "heroLevelUp", function(evtData)
                 local diff = evtData.new - evtData.old
                 effector.attach(evtData.triggerUnit, "LevelupCaster", "chest", 1)
@@ -83,7 +83,7 @@ function process:onStart()
             bubble["hero" .. i] = u
         end
     end
-    ---@param evtData evtOnKeyboardReleaseData
+    ---@param evtData eventOnKeyboardRelease
     keyboard.onRelease(keyboard.code["F1"], "avatar", function(evtData)
         local idx = evtData.triggerPlayer:index()
         ---@type Unit
@@ -143,7 +143,7 @@ function process:onStart()
     
     -- 敌人掉落
     local dropList = { TPL_ITEM["短剑"], TPL_ITEM["木盾"] }
-    ---@param evtData evtOnUnitDeadData
+    ---@param evtData eventOnUnitDead
     event.reactRegister(eventKind.unitDead, "enemyDrop", function(evtData)
         local tu = evtData.triggerUnit
         if (enemyTeam:is(tu) and math.rand(1, 10) == 3) then

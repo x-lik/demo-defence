@@ -1,4 +1,4 @@
----@param abData evtOnAbilityGetData
+---@param abData eventOnAbilityGet
 TPL_ABILITY.DEMO = AbilityTpl()
     :name("剑之勇气")
     :description(

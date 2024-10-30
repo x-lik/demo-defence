@@ -4,11 +4,11 @@ local function _z(u, offset)
     return u:h() + 130 + offset
 end
 
----@param evtData evtOnUnitCritData
+---@param evtData eventOnUnitCrit
 event.reactRegister(eventKind.unitCrit, function(evtData)
     effector.attach(evtData.targetUnit, "xlik_crit", "origin", 0.5)
 end)
----@param evtData evtOnUnitCritAbilityData
+---@param evtData eventOnUnitCritAbility
 event.reactRegister(eventKind.unitCritAbility, function(evtData)
     effector.attach(evtData.targetUnit, "xlik_crit_ability", "origin", 0.5)
     mtg.model({
@@ -22,11 +22,11 @@ event.reactRegister(eventKind.unitCritAbility, function(evtData)
         duration = 0.8,
     })
 end)
----@param evtData evtOnUnitAvoidData
+---@param evtData eventOnUnitAvoid
 event.reactRegister(eventKind.unitAvoid, function(evtData)
     effector.attach(evtData.triggerUnit, "xlik_ttg_avoid", "overhead", 0.3)
 end)
----@param evtData evtOnUnitImmuneInvincibleData
+---@param evtData eventOnUnitImmuneInvincible
 event.reactRegister(eventKind.unitImmuneInvincible, function(evtData)
     effector.attach(evtData.triggerUnit, "DivineShieldTarget", "origin", 1)
     mtg.model({
@@ -39,7 +39,7 @@ event.reactRegister(eventKind.unitImmuneInvincible, function(evtData)
         duration = 1,
     })
 end)
----@param evtData evtOnUnitImmuneDefendData
+---@param evtData eventOnUnitImmuneDefend
 event.reactRegister(eventKind.unitImmuneDefend, function(evtData)
     mtg.model({
         model = "xlik_ttg_immune_damage",
@@ -51,7 +51,7 @@ event.reactRegister(eventKind.unitImmuneDefend, function(evtData)
         duration = 1,
     })
 end)
----@param evtData evtOnUnitImmuneReductionData
+---@param evtData eventOnUnitImmuneReduction
 event.reactRegister(eventKind.unitImmuneReduction, function(evtData)
     mtg.model({
         model = "xlik_ttg_immune_damage",
@@ -63,7 +63,7 @@ event.reactRegister(eventKind.unitImmuneReduction, function(evtData)
         duration = 1,
     })
 end)
----@param evtData evtOnUnitImmuneEnchantData
+---@param evtData eventOnUnitImmuneEnchant
 event.reactRegister(eventKind.unitImmuneEnchant, function(evtData)
     mtg.model({
         model = "xlik_ttg_immune_enchant",
@@ -75,35 +75,35 @@ event.reactRegister(eventKind.unitImmuneEnchant, function(evtData)
         duration = 1,
     })
 end)
----@param evtData evtOnUnitHPSuckAttackData
+---@param evtData eventOnUnitHPSuckAttack
 event.reactRegister(eventKind.unitHPSuckAttack, function(evtData)
     effector.attach(evtData.triggerUnit, "HealTarget2", "origin", 0.5)
 end)
----@param evtData evtOnUnitHPSuckAbilityData
+---@param evtData eventOnUnitHPSuckAbility
 event.reactRegister(eventKind.unitHPSuckAbility, function(evtData)
     effector.attach(evtData.triggerUnit, "HealTarget2", "origin", 0.5)
 end)
----@param evtData evtOnUnitMPSuckAttackData
+---@param evtData eventOnUnitMPSuckAttack
 event.reactRegister(eventKind.unitMPSuckAttack, function(evtData)
     effector.attach(evtData.triggerUnit, "AImaTarget", "origin", 0.5)
 end)
----@param evtData evtOnUnitMPSuckAbilityData
+---@param evtData eventOnUnitMPSuckAbility
 event.reactRegister(eventKind.unitMPSuckAbility, function(evtData)
     effector.attach(evtData.triggerUnit, "AImaTarget", "origin", 0.5)
 end)
----@param evtData evtOnUnitBeStunData
+---@param evtData eventOnUnitBeStun
 event.reactRegister(eventKind.unitBeStun, function(evtData)
     effector.attach(evtData.triggerUnit, "ThunderclapTarget", "overhead", evtData.duration)
 end)
----@param evtData evtOnUnitBeSplitData
+---@param evtData eventOnUnitBeSplit
 event.reactRegister(eventKind.unitBeSplit, function(evtData)
     effector.unit("SpellBreakerAttack", evtData.triggerUnit, 0)
 end)
----@param evtData evtOnUnitBeSplitSpreadData
+---@param evtData eventOnUnitBeSplitSpread
 event.reactRegister(eventKind.unitBeSplitSpread, function(evtData)
     effector.unit("CleaveDamageTarget", evtData.triggerUnit, 0)
 end)
----@param evtData evtOnUnitBeShieldData
+---@param evtData eventOnUnitBeShield
 event.reactRegister(eventKind.unitBeShield, function(evtData)
     local u = evtData.triggerUnit
     mtg.word({
@@ -118,7 +118,7 @@ event.reactRegister(eventKind.unitBeShield, function(evtData)
         duration = 0.6,
     })
 end)
----@param evtData evtOnUnitHurtData
+---@param evtData eventOnUnitHurt
 event.reactRegister(eventKind.unitHurt, function(evtData)
     local str = math.format(evtData.damage, 0)
     local height = -50
@@ -139,7 +139,7 @@ event.reactRegister(eventKind.unitHurt, function(evtData)
         duration = 0.7,
     })
 end)
----@param evtData evtOnUnitEnchantData
+---@param evtData eventOnUnitEnchant
 event.reactRegister(eventKind.unitEnchant, function(evtData)
     local m = {
         [injury.damageType.fire.value] = "xlik_ttg_e_fire",

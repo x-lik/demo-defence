@@ -1,27 +1,27 @@
 --- 方便伤害类型引用
----@alias noteDamageTypeData {value:string,label:string}
+---@alias damageTypeSetter {value:string,label:string}
 
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.fire = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.rock = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.water = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.ice = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.wind = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.light = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.dark = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.grass = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.thunder = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.poison = nil
----@type noteDamageTypeData
+---@type damageTypeSetter
 injury.damageType.steel = nil
 
 -- 附魔设定

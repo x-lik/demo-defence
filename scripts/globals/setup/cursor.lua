@@ -261,7 +261,7 @@ game.onStart(function()
             end
             _unitU = nil
         end,
-        ---@param evtData evtOnMouseMoveData
+        ---@param evtData eventOnMouseMove
         refresh = function(evtData)
             local data = cursor.currentData()
             ---@type Ability
@@ -323,7 +323,7 @@ game.onStart(function()
             csPointer:size(width, height)
             csPointer:relation(UI_ALIGN_CENTER, UIGame, UI_ALIGN_LEFT_BOTTOM, japi.UIDisAdaptive(rx), ry)
         end,
-        ---@param evtData evtOnMouseLeftClickData
+        ---@param evtData eventOnMouseLeftClick
         leftClick = function(evtData)
             local data = cursor.currentData()
             local ab = data.ability
@@ -353,7 +353,7 @@ game.onStart(function()
             csPointer:alpha(0)
             abilityOver()
         end,
-        ---@param evtData evtOnMouseMoveData
+        ---@param evtData eventOnMouseMove
         refresh = function(evtData)
             local data = cursor.currentData()
             ---@type Ability
@@ -386,7 +386,7 @@ game.onStart(function()
             csPointer:size(width, height)
             csPointer:relation(UI_ALIGN_CENTER, UIGame, UI_ALIGN_LEFT_BOTTOM, japi.UIDisAdaptive(rx), ry)
         end,
-        ---@param evtData evtOnMouseLeftClickData
+        ---@param evtData eventOnMouseLeftClick
         leftClick = function(evtData)
             local data = cursor.currentData()
             local ab = data.ability
@@ -428,7 +428,7 @@ game.onStart(function()
             end
             _unit1 = nil
         end,
-        ---@param evtData evtOnMouseMoveData
+        ---@param evtData eventOnMouseMove
         refresh = function(evtData)
             local data = cursor.currentData()
             ---@type Ability
@@ -535,7 +535,7 @@ game.onStart(function()
             csArea:position(tx, ty)
             csArea:show(true)
         end,
-        ---@param evtData evtOnMouseLeftClickData
+        ---@param evtData eventOnMouseLeftClick
         leftClick = function(evtData)
             local data = cursor.currentData()
             local ab = data.ability
@@ -579,7 +579,7 @@ game.onStart(function()
             end
             _unit1 = nil
         end,
-        ---@param evtData evtOnMouseMoveData
+        ---@param evtData eventOnMouseMove
         refresh = function(evtData)
             local data = cursor.currentData()
             ---@type Ability
@@ -680,7 +680,7 @@ game.onStart(function()
             csArea:position(tx, ty)
             csArea:show(true)
         end,
-        ---@param evtData evtOnMouseLeftClickData
+        ---@param evtData eventOnMouseLeftClick
         leftClick = function(evtData)
             local data = cursor.currentData()
             local ab = data.ability
@@ -732,7 +732,7 @@ game.onStart(function()
             _float1 = nil
             _float2 = nil
         end,
-        ---@param evtData evtOnMouseMoveData
+        ---@param evtData eventOnMouseMove
         refresh = function(evtData)
             local data = cursor.currentData()
             local rx, ry = evtData.rx, evtData.ry
@@ -818,7 +818,7 @@ game.onStart(function()
             data.over()
             mouse.onLeftClick("followDrop", nil)
         end,
-        ---@param evtData evtOnMouseMoveData
+        ---@param evtData eventOnMouseMove
         refresh = function(evtData)
             local w, h = csFollow._width, csFollow._height
             local rx, ry = evtData.rx, evtData.ry
@@ -840,7 +840,7 @@ game.onStart(function()
             end
             csFollow:relation(UI_ALIGN_CENTER, UIGame, UI_ALIGN_LEFT_BOTTOM, rx, ry)
         end,
-        ---@param evtData evtOnMouseRightClickData
+        ---@param evtData eventOnMouseRightClick
         rightClick = function(evtData)
             local data = cursor.currentData()
             data.rightClick(evtData)

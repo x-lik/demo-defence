@@ -1,5 +1,5 @@
----@param hurtData evtOnUnitHurtData
----@param effectiveData evtOnAbilityEffectiveData
+---@param hurtData eventOnUnitHurt
+---@param effectiveData eventOnAbilityEffective
 TPL_ABILITY.ZZJY = AbilityTpl()
     :name("自在极意被动")
     :targetType(ability.targetType.pas)
