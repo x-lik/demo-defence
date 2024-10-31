@@ -27,6 +27,66 @@ game.onStart(function()
         end
     end)
     
+    -- 指针tooltips
+    local lastUnder
+    mouse.onMove("lk_cs_tooltips", function(evtData)
+        if (cursor.isQuoting()) then
+            return
+        end
+        ---@type Unit|Item
+        local under = class.h2o(japi.DZ_GetUnitUnderMouse())
+        local tx, ty = -1, -1
+        local tips, textAlign
+        local fontSize = 9
+        if (class.isObject(under, UnitClass)) then
+            --- If Unit
+            if (under:owner() ~= triggerPlayer and false == under:isEnemy(triggerPlayer)) then
+                tx, ty = japi.UIDisAdaptive(evtData.rx), evtData.ry + 0.024
+                if (under:level() > 0) then
+                    tips = { "等级 " .. under:level(), under:name() }
+                else
+                    tips = { under:name() }
+                end
+                textAlign = TEXT_ALIGN_CENTER
+            end
+        elseif (nil ~= class._cache[GridClass] and nil ~= class._cache[GridClass][ItemClass]) then
+            --- If Item
+            under = Grid(ItemClass):closest({
+                circle = {
+                    x = japi.DZ_GetMouseTerrainX(),
+                    y = japi.DZ_GetMouseTerrainY(),
+                    radius = player.pickGridRadius
+                }
+            })
+            if (class.isObject(under, ItemClass)) then
+                effector.alpha(under._handle, 255)
+                local cx, cy = japi.ConvertWorldPosition(under:x(), under:y(), under:z())
+                tx, ty = japi.UIDisAdaptive(cx), cy + 0.024
+                if (under:level() > 0 and under:levelMax() > 1) then
+                    tips = { "品级 " .. under:level() .. '/' .. under:levelMax(), under:name() }
+                else
+                    tips = { under:name() }
+                end
+                textAlign = TEXT_ALIGN_LEFT
+            end
+        end
+        if (nil ~= lastUnder and under ~= lastUnder) then
+            if (class.isObject(lastUnder, ItemClass) and true == lastUnder:instance()) then
+                effector.alpha(lastUnder._handle, 125)
+            end
+            lastUnder = nil
+        end
+        if (nil == tips) then
+            UITooltips(0):show(false)
+            return
+        end
+        lastUnder = under
+        UITooltips(0)
+            :relation(UI_ALIGN_BOTTOM, UIGame, UI_ALIGN_LEFT_BOTTOM, tx, ty)
+            :content({ fontSize = fontSize, textAlign = textAlign, tips = table.concat(tips, '|n') })
+            :show(true)
+    end)
+    
     -- 自定义指针选取
     local csFollow = UIBackdrop("myFollow", UIGame):show(false) -- 跟踪比指针底层所以先定义
     local csPointer = UIBackdrop("myPointer", UIGame):adaptive(true):size(0.01, 0.01)
@@ -97,7 +157,7 @@ game.onStart(function()
             alerter.message(p, true, "无法行动", 255, 0, 0)
             return false
         end
-        if (selection:isAbilityChanting() or selection:isAbilityKeeping()) then
+        if (selection:isCastChanting() or selection:isCastKeeping()) then
             alerter.message(p, true, "施法中")
             return false
         end
@@ -288,7 +348,7 @@ game.onStart(function()
             ---@type Unit|Item
             local under = class.h2u(japi.DZ_GetUnitUnderMouse())
             ---@type Unit
-            local isBan = bu:isInterrupt() or bu:isPause() or bu:isAbilityChanting() or bu:isAbilityKeeping()
+            local isBan = bu:isInterrupt() or bu:isPause() or bu:isCastChanting() or bu:isCastKeeping()
             if (isBan) then
                 alpha = math.ceil(alpha / 2)
             end
@@ -377,7 +437,7 @@ game.onStart(function()
             local texture = csTexture.aim.normal
             local width = csTexture.aim.width
             local height = csTexture.aim.height
-            local isBan = bu:isInterrupt() or bu:isPause() or bu:isAbilityChanting() or bu:isAbilityKeeping()
+            local isBan = bu:isInterrupt() or bu:isPause() or bu:isCastChanting() or bu:isCastKeeping()
             if (isBan) then
                 alpha = math.ceil(alpha / 2)
             end
