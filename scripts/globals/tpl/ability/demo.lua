@@ -11,7 +11,8 @@ TPL_ABILITY.DEMO = AbilityTpl()
     :onEvent(eventKind.abilityGet,
     function(abData)
         local ak = abData.triggerAbility:id()
-        class.registerAfterChange(UnitClass, "hpCur", ak, function(evtData)
+        ---@param evtData eventOnClassAfterChange
+        event.syncRegister(abData.triggerUnit, eventKind.classAfterChange .. "hpCur", ak, function(evtData)
             ---@type Unit
             local u = evtData.triggerObject
             BuffClear(u, { key = "剑之勇气" .. ak })
@@ -50,6 +51,6 @@ TPL_ABILITY.DEMO = AbilityTpl()
     :onEvent(eventKind.abilityLose,
     function(abData)
         local ak = abData.triggerAbility:id()
-        class.registerAfterChange(UnitClass, "hpCur", ak, nil)
+        event.syncUnregister(abData.triggerUnit, eventKind.classAfterChange .. "hpCur", ak)
         BuffClear(abData.triggerUnit, { key = "剑之勇气" .. ak })
     end)

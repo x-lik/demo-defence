@@ -144,7 +144,7 @@ function process:onStart()
     -- 敌人掉落
     local dropList = { TPL_ITEM["短剑"], TPL_ITEM["木盾"] }
     ---@param evtData eventOnUnitDead
-    event.reactRegister(eventKind.unitDead, "enemyDrop", function(evtData)
+    event.syncRegister(UnitClass, eventKind.unitDead, "enemyDrop", function(evtData)
         local tu = evtData.triggerUnit
         if (enemyTeam:is(tu) and math.rand(1, 10) == 3) then
             local x, y = tu:x(), tu:y()
