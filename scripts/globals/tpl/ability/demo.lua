@@ -13,8 +13,7 @@ TPL_ABILITY.DEMO = AbilityTpl()
         local ak = abData.triggerAbility:id()
         ---@param evtData eventOnClassAfterChange
         event.syncRegister(abData.triggerUnit, eventKind.classAfterChange .. "hpCur", ak, function(evtData)
-            ---@type Unit
-            local u = evtData.triggerObject
+            local u = evtData.triggerUnit
             BuffClear(u, { key = "剑之勇气" .. ak })
             local cur = evtData.new
             if (cur > 0) then

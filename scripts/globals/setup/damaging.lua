@@ -22,9 +22,9 @@ damageFlow:flux("breakArmor", function(data)
             if (nil ~= b) then
                 ignore[b.value] = true
                 --- 触发无视防御事件
-                event.syncTrigger(data.sourceUnit, eventKind.unitBreakArmor, { targetUnit = data.targetUnit, breakType = b })
+                event.syncTrigger(data.sourceUnit, eventKind.unitBreakArmor, { targetUnit = data.targetUnit, breakArmorType = b })
                 --- 触发被破防事件
-                event.syncTrigger(data.targetUnit, eventKind.unitBeBreakArmor, { breakUnit = data.sourceUnit, breakType = b })
+                event.syncTrigger(data.targetUnit, eventKind.unitBeBreakArmor, { breakUnit = data.sourceUnit, breakArmorType = b })
             end
         end
     end
