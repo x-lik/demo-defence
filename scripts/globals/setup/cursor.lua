@@ -59,7 +59,7 @@ game.onPhase("process", function()
                 }
             })
             if (class.isObject(under, ItemClass)) then
-                effector.alpha(under._handle, 255)
+                japi.DZ_SetEffectVertexAlpha(under._handle._handle, 255)
                 local cx, cy = japi.ConvertWorldPosition(under:x(), under:y(), under:z())
                 tx, ty = japi.UIDisAdaptive(cx), cy + 0.024
                 if (under:level() > 0 and under:levelMax() > 1) then
@@ -72,7 +72,7 @@ game.onPhase("process", function()
         end
         if (nil ~= lastUnder and under ~= lastUnder) then
             if (class.isObject(lastUnder, ItemClass) and true == lastUnder:instance()) then
-                effector.alpha(lastUnder._handle, 125)
+                japi.DZ_SetEffectVertexAlpha(lastUnder._handle._handle, 125)
             end
             lastUnder = nil
         end
@@ -289,7 +289,7 @@ game.onPhase("process", function()
                 return false
             end
             sound.vcm("war3_MouseClick1")
-            sync.send("xlk_sync_g", { "ability_effective", ab:id() })
+            sync.send("lk_sync_g", { "ability_effective", ab:id() })
             cursor.quoteOver()
         end,
     })
@@ -307,7 +307,7 @@ game.onPhase("process", function()
             if (ab:isCastTarget(u)) then
                 if (_unitU == u) then
                     _unitU = nil
-                    sync.send("xlk_sync_g", { "ability_effective_u", ab:id(), u:id() })
+                    sync.send("lk_sync_g", { "ability_effective_u", ab:id(), u:id() })
                     return false
                 end
             end
@@ -393,7 +393,7 @@ game.onPhase("process", function()
                 if (false == ab:isCastTarget(targetUnit)) then
                     alerter.message(evtData.triggerPlayer, true, "目标不允许")
                 else
-                    sync.send("xlk_sync_g", { "ability_effective_u", ab:id(), targetUnit:id() })
+                    sync.send("lk_sync_g", { "ability_effective_u", ab:id(), targetUnit:id() })
                     cursor.quoteOver()
                 end
             end
@@ -461,7 +461,7 @@ game.onPhase("process", function()
                 alerter.message(evtData.triggerPlayer, true, "无效目标")
                 return
             end
-            sync.send("xlk_sync_g", { "ability_effective_xyz", ab:id(), cond.x, cond.y, japi.DZ_GetMouseTerrainZ() })
+            sync.send("lk_sync_g", { "ability_effective_xyz", ab:id(), cond.x, cond.y, japi.DZ_GetMouseTerrainZ() })
             cursor.quoteOver()
         end,
     })
@@ -612,7 +612,7 @@ game.onPhase("process", function()
                 alerter.message(evtData.triggerPlayer, true, "无效范围")
                 return
             end
-            sync.send("xlk_sync_g", { "ability_effective_xyz", ab:id(), cond.x, cond.y, japi.DZ_GetMouseTerrainZ() })
+            sync.send("lk_sync_g", { "ability_effective_xyz", ab:id(), cond.x, cond.y, japi.DZ_GetMouseTerrainZ() })
             cursor.quoteOver()
         end,
     })
@@ -764,7 +764,7 @@ game.onPhase("process", function()
                 alerter.message(evtData.triggerPlayer, true, "无效范围")
                 return
             end
-            sync.send("xlk_sync_g", { "ability_effective_xyz", ab:id(), cond.x, cond.y, japi.DZ_GetMouseTerrainZ() })
+            sync.send("lk_sync_g", { "ability_effective_xyz", ab:id(), cond.x, cond.y, japi.DZ_GetMouseTerrainZ() })
             cursor.quoteOver()
         end,
     })
@@ -860,9 +860,9 @@ game.onPhase("process", function()
                             })
                             local isTask = datum.ternary(keyboard.isPressing(keyboard.code["Shift"]), 1, 0)
                             if (class.isObject(closest, UnitClass)) then
-                                sync.send("xlk_sync_g", { "item_deliver_cursor", obj:id(), closest:id(), isTask })
+                                sync.send("lk_sync_g", { "item_deliver_cursor", obj:id(), closest:id(), isTask })
                             else
-                                sync.send("xlk_sync_g", { "item_drop_cursor", obj:id(), tx, ty, isTask })
+                                sync.send("lk_sync_g", { "item_drop_cursor", obj:id(), tx, ty, isTask })
                             end
                             cursor.quoteOver()
                         end
