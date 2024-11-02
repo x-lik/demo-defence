@@ -20,7 +20,7 @@ function process:onStart()
     
     -- 获取路径的后缀名
     local function ext(path)
-        local idx = string.find(path, "%.", 1)
+        local idx = string.find(path, "%.", nil)
         if idx then
             return string.sub(path, idx)
         else

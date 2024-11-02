@@ -1,5 +1,5 @@
 -- 指针配置
-game.onStart(function()
+game.onPhase("process", function()
     -- 自定义选择圈
     J.EnableSelect(true, false)
     local sel = Image("ReplaceableTextures\\Selection\\SelectionCircleLarge.blp", 72, 72):show(false)
@@ -40,7 +40,7 @@ game.onStart(function()
         local fontSize = 9
         if (class.isObject(under, UnitClass)) then
             --- If Unit
-            if (under:owner() ~= triggerPlayer and false == under:isEnemy(triggerPlayer)) then
+            if (under:owner() ~= evtData.triggerPlayer and false == under:isEnemy(evtData.triggerPlayer)) then
                 tx, ty = japi.UIDisAdaptive(evtData.rx), evtData.ry + 0.024
                 if (under:level() > 0) then
                     tips = { "等级 " .. under:level(), under:name() }

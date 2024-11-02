@@ -1,6 +1,6 @@
 --- 挂机灭绝器
 --- negative hang up
-if (false == XLIK_DEBUG) then
+if (false == LK_DEBUG) then
     
     sync.receive("negativeHangUp", function(syncData)
         local idx = tonumber(syncData.transferData[1])

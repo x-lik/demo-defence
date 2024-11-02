@@ -32,7 +32,7 @@ player.command("^-d [-+=]%d+$", function(evtData)
         end
     end
 end)
-if (XLIK_DEBUG) then
+if (LK_DEBUG) then
     --- 流程掌控
     player.command("^-proc [a-zA-Z0-9_]+$", function(evtData)
         local p = string.trim(evtData.matchedString)
