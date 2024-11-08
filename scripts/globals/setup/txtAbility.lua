@@ -12,7 +12,7 @@ description.define("abilityBase", function(this, options)
             lvTxt = " - 等级 " .. colour.hex(colour.gold, lv)
         end
         if (tt ~= ability.targetType.pas) then
-            table.insert(desc, this:name() .. lvTxt .. "（" .. colour.hex(colour.gold, this:hotkey()) .. "）")
+            table.insert(desc, this:name() .. lvTxt .. "（" .. colour.hex(colour.gold, keyboard.i2s(this:hotkey())) .. "）")
         else
             table.insert(desc, this:name() .. lvTxt)
         end

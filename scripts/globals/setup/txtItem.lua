@@ -59,7 +59,7 @@ description.define("itemBase", function(this, options)
         local tt = ab:targetType()
         if (class.isObject(this, ItemClass)) then
             if (tt ~= ability.targetType.pas and nil ~= this:hotkey()) then
-                name = name .. "（" .. colour.hex(colour.gold, "数字" .. this:hotkey()) .. "）"
+                name = name .. "（" .. colour.hex(colour.gold, "数字" .. keyboard.i2s(this:hotkey())) .. "）"
             end
             desc[1] = name
         else
