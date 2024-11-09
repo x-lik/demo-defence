@@ -77,11 +77,11 @@ game.onPhase("process", function()
             lastUnder = nil
         end
         if (nil == tips) then
-            UITooltips(0):show(false)
+            UITooltips(3):show(false)
             return
         end
         lastUnder = under
-        UITooltips(0)
+        UITooltips(3)
             :relation(UI_ALIGN_BOTTOM, UIGame, UI_ALIGN_LEFT_BOTTOM, tx, ty)
             :content({ fontSize = fontSize, textAlign = textAlign, tips = table.concat(tips, '|n') })
             :show(true)
