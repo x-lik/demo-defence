@@ -26,7 +26,7 @@ injury.damageType.steel = nil
 
 -- 附魔设定
 local fire = Enchant("fire", "火")
-fire:setEffectAppend("origin", "BreathOfFireDamage")
+fire:setEffect("origin", "BreathOfFireDamage")
 Enchant("rock", "岩")
 Enchant("water", "水")
 Enchant("ice", "冰")

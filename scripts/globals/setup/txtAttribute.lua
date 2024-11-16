@@ -108,7 +108,7 @@ attribute.conf(F, "leap", "冲锋中", nil, "icon/ability/Sprinter")
 attribute.conf(F, "crackFly", "被击飞", nil, "icon/ability/Jumpback")
 attribute.conf(F, "sp", "额外特性")
 --
-for _, k in ipairs(enchant.keys) do
+EnchantForeach(function(k)
     local n = Enchant(k):name()
     local eip = elementIconPath[k]
     attribute.conf(F, k, n, nil, eip)
@@ -118,7 +118,7 @@ for _, k in ipairs(enchant.keys) do
     attribute.conf(F, SYMBOL_EI .. k, n .. "免疫", eip)
     attribute.conf(F, SYMBOL_ODD .. SYMBOL_E .. k, n .. "几率", '%', eip)
     attribute.conf(F, SYMBOL_RES .. SYMBOL_E .. k, n .. "抗性", '%', eip)
-end
+end)
 for _, v in ipairs(odds) do
     attribute.conf(F, SYMBOL_ODD .. v, attribute.label(v) .. "几率", '%', attribute.icon(v))
 end

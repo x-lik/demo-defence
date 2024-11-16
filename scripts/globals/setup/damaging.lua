@@ -299,10 +299,11 @@ damageFlow:flux("mpSuckAbility", function(data)
 end)
 
 --- 附魔加成|抵抗|精通|附着|免疫
+---@param data {targetUnit:Unit,sourceUnit:Unit}
 damageFlow:flux("enchant", function(data)
     local percent = 0
     if (nil ~= data.sourceUnit) then
-        local amplify = data.sourceUnit:enchant(data.damageType.value)
+        local amplify = data.sourceUnit:enchantStrengthen(data.damageType.value)
         if (amplify ~= 0) then
             percent = percent + amplify
         end
@@ -321,7 +322,7 @@ damageFlow:flux("enchant", function(data)
     if (data.damageType ~= injury.damageType.common) then
         -- 一般设定攻击技能物品来源可触发附魔，禁止反应式伤害再触发
         if (data.damageSrc == injury.damageSrc.attack or data.damageSrc == injury.damageSrc.ability or data.damageSrc == injury.damageSrc.item) then
-            enchant.append(data.targetUnit, data.damageType, data.damageTypeLevel, data.sourceUnit)
+            data.targetUnit:enchantAppend(data.damageType, data.damageTypeLevel, data.sourceUnit)
         end
     end
     if (data.targetUnit:isEnchantImmune(data.damageType.value)) then
