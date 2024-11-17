@@ -7,10 +7,10 @@ end)
 
 --- 提取一些需要的参数
 damageFlow:flux("prop", function(data)
-    data.defend = data.targetUnit:defend()
-    data.avoid = data.targetUnit:avoid()
+    data.defend = data.targetUnit:get("defend") or 0
+    data.avoid = data.targetUnit:get("avoid") or 0
     if (class.isObject(data.sourceUnit, UnitClass)) then
-        data.avoid = data.avoid - data.sourceUnit:aim()
+        data.avoid = data.avoid - (data.sourceUnit:get("aim") or 0)
     end
 end)
 
@@ -29,16 +29,16 @@ damageFlow:flux("breakArmor", function(data)
         end
     end
     --- 处理防御
-    if (true == ignore.defend and data.defend > 0) then
+    if (ignore.defend == true and data.defend > 0) then
         data.defend = 0
     end
     --- 处理回避
-    if (true == ignore.avoid and data.avoid > 0) then
+    if (ignore.avoid == true and data.avoid > 0) then
         data.avoid = 0
     end
     --- 单位是否无视无敌
     if (true == data.targetUnit:isInvulnerable()) then
-        if (false == ignore.invincible) then
+        if (ignore.invincible == false) then
             --- 触发无敌抵御事件
             data.damage = 0
             event.syncTrigger(data.targetUnit, eventKind.unitImmuneInvincible, { sourceUnit = data.sourceUnit })
@@ -48,10 +48,11 @@ damageFlow:flux("breakArmor", function(data)
 end)
 
 --- 伤害加深(%)
+---@param data {sourceUnit:Unit}
 damageFlow:flux("damageIncrease", function(data)
-    local approve = (nil ~= data.sourceUnit)
+    local approve = (data.sourceUnit ~= nil)
     if (approve) then
-        local damageIncrease = data.sourceUnit:damageIncrease()
+        local damageIncrease = data.sourceUnit:get("damageIncrease") or 0
         if (damageIncrease > 0) then
             data.damage = data.damage * (1 + damageIncrease * 0.01)
         end
@@ -59,8 +60,9 @@ damageFlow:flux("damageIncrease", function(data)
 end)
 
 --- 护盾
+---@param data {targetUnit:Unit}
 damageFlow:flux("shield", function(data)
-    local sh = data.targetUnit:shieldCur()
+    local sh = data.targetUnit:get("shieldCur") or 0
     if (sh > 0) then
         local sd = 0
         if (sh >= data.damage) then
@@ -79,18 +81,20 @@ damageFlow:flux("shield", function(data)
 end)
 
 --- 受伤加深(%)
+---@param data {targetUnit:Unit}
 damageFlow:flux("hurtIncrease", function(data)
-    local hurtIncrease = data.targetUnit:hurtIncrease()
+    local hurtIncrease = data.targetUnit:get("hurtIncrease") or 0
     if (hurtIncrease > 0) then
         data.damage = data.damage * (1 + hurtIncrease * 0.01)
     end
 end)
 
 --- 自身暴击
+---@param data {sourceUnit:Unit}
 damageFlow:flux("crit", function(data)
-    local approve = (nil ~= data.sourceUnit and (data.damageSrc == injury.damageSrc.attack))
+    local approve = (data.sourceUnit ~= nil and (data.damageSrc == injury.damageSrc.attack))
     if (approve) then
-        local crit = data.sourceUnit:crit()
+        local crit = data.sourceUnit:get("crit") or 0
         if (crit > 0) then
             local odds = data.sourceUnit:odds("crit") - data.targetUnit:resistance("crit")
             if (odds > math.rand(1, 100)) then
@@ -121,10 +125,11 @@ damageFlow:flux("avoid", function(data)
 end)
 
 --- 自身攻击眩晕
+---@param data {sourceUnit:Unit}
 damageFlow:flux("stun", function(data)
-    local approve = (nil ~= data.sourceUnit and (data.damageSrc == injury.damageSrc.attack))
+    local approve = (data.sourceUnit ~= nil and (data.damageSrc == injury.damageSrc.attack))
     if (approve) then
-        local stun = data.sourceUnit:stun()
+        local stun = data.sourceUnit:get("stun") or 0
         if (stun > 0) then
             --- 触发眩晕
             ability.stun({ sourceUnit = data.sourceUnit, targetUnit = data.targetUnit, duration = stun, odds = data.sourceUnit:odds("stun") })
@@ -133,9 +138,10 @@ damageFlow:flux("stun", function(data)
 end)
 
 --- 反伤(%)
+---@param data {sourceUnit:Unit,targetUnit:Unit}
 damageFlow:flux("hurtRebound", function(data)
     -- 抵抗
-    local approve = (nil ~= data.sourceUnit and data.damageSrc == injury.damageSrc.rebound)
+    local approve = (data.sourceUnit ~= nil and data.damageSrc == injury.damageSrc.rebound)
     if (approve) then
         local resistance = data.sourceUnit:resistance("hurtRebound")
         if (resistance > 0) then
@@ -147,9 +153,9 @@ damageFlow:flux("hurtRebound", function(data)
         end
     end
     -- 反射
-    approve = (nil ~= data.sourceUnit and (data.damageSrc == injury.damageSrc.attack or data.damageSrc == injury.damageSrc.ability))
+    approve = (data.sourceUnit ~= nil and (data.damageSrc == injury.damageSrc.attack or data.damageSrc == injury.damageSrc.ability))
     if (approve) then
-        local hurtRebound = data.targetUnit:hurtRebound()
+        local hurtRebound = data.targetUnit:get("hurtRebound") or 0
         local odds = data.targetUnit:odds("hurtRebound")
         if (hurtRebound > 0 and odds > math.rand(1, 100)) then
             local dmgRebound = math.trunc(data.damage * hurtRebound * 0.01, 3)
@@ -167,28 +173,28 @@ damageFlow:flux("hurtRebound", function(data)
                 end
                 if (data.damageSrc == injury.damageSrc.attack) then
                     -- 攻击情况
-                    ---@type Assault
-                    local am = data.sourceUnit:assault()
-                    local mode = am:mode()
+                    local as = data.sourceUnit:assault()
+                    local mode = as:mode()
                     if (mode == "instant") then
                         damagedArrived()
                     elseif (mode == "lightning") then
                         local lDur = 0.3
                         local lDelay = lDur * 0.6
                         lightning.create(
-                            am:model(),
+                            as:model(),
                             data.targetUnit:x(), data.targetUnit:y(), data.targetUnit:h(),
                             data.sourceUnit:x(), data.sourceUnit:y(), data.sourceUnit:h(),
-                            lDur)
+                            lDur
+                        )
                         time.setTimeout(lDelay, damagedArrived)
                     elseif (mode == "missile") then
                         ability.missile({
-                            model = am:model(),
+                            model = as:model(),
                             sourceUnit = data.targetUnit,
                             targetUnit = data.sourceUnit,
-                            speed = am:speed(),
-                            height = am:height() / 4,
-                            acceleration = am:acceleration(),
+                            speed = as:speed(),
+                            height = as:height() / 4,
+                            acceleration = as:acceleration(),
                             onEnd = damagedArrived,
                         })
                     end
@@ -217,8 +223,9 @@ damageFlow:flux("defend", function(data)
 end)
 
 --- 减伤(%)
+---@param data {targetUnit:Unit}
 damageFlow:flux("hurtReduction", function(data)
-    local hurtReduction = data.targetUnit:hurtReduction()
+    local hurtReduction = data.targetUnit:get("hurtReduction") or 0
     if (hurtReduction > 0) then
         data.damage = data.damage * (1 - hurtReduction * 0.01)
         if (data.damage < 1) then
@@ -231,10 +238,11 @@ damageFlow:flux("hurtReduction", function(data)
 end)
 
 --- 攻击吸血
+---@param data {sourceUnit:Unit}
 damageFlow:flux("hpSuckAttack", function(data)
-    local approve = (nil ~= data.sourceUnit and data.damageSrc == injury.damageSrc.attack)
+    local approve = (data.sourceUnit ~= nil and data.damageSrc == injury.damageSrc.attack)
     if (approve) then
-        local percent = data.sourceUnit:hpSuckAttack() - data.targetUnit:resistance("hpSuckAttack")
+        local percent = (data.sourceUnit:get("hpSuckAttack") or 0) - data.targetUnit:resistance("hpSuckAttack")
         local val = data.damage * percent * 0.01
         if (percent > 0 and val > 0) then
             data.sourceUnit:hpCur("+=" .. val)
@@ -246,10 +254,11 @@ damageFlow:flux("hpSuckAttack", function(data)
 end)
 
 --- 技能吸血
+---@param data {sourceUnit:Unit}
 damageFlow:flux("hpSuckAbility", function(data)
-    local approve = (nil ~= data.sourceUnit and data.damageSrc == injury.damageSrc.ability)
+    local approve = (data.sourceUnit ~= nil and data.damageSrc == injury.damageSrc.ability)
     if (approve) then
-        local percent = data.sourceUnit:hpSuckAbility() - data.targetUnit:resistance("hpSuckAbility")
+        local percent = (data.sourceUnit:get("hpSuckAbility") or 0) - data.targetUnit:resistance("hpSuckAbility")
         local val = data.damage * percent * 0.01
         if (percent > 0 and val > 0) then
             data.sourceUnit:hpCur("+=" .. val)
@@ -261,10 +270,11 @@ damageFlow:flux("hpSuckAbility", function(data)
 end)
 
 --- 攻击吸魔;吸魔会根据伤害，扣减目标的魔法值，再据百分比增加自己的魔法值;目标魔法值不足 1 从而吸收时，则无法吸取
+---@param data {sourceUnit:Unit}
 damageFlow:flux("mpSuckAttack", function(data)
-    local approve = (nil ~= data.sourceUnit and data.damageSrc == injury.damageSrc.attack and data.sourceUnit:mp() > 0 and data.targetUnit:mpCur() > 0)
+    local approve = (data.sourceUnit ~= nil and data.damageSrc == injury.damageSrc.attack and data.sourceUnit:mp() > 0 and data.targetUnit:mpCur() > 0)
     if (approve) then
-        local percent = data.sourceUnit:mpSuckAttack() - data.targetUnit:resistance("mpSuckAttack")
+        local percent = (data.sourceUnit:get("mpSuckAttack") or 0) - data.targetUnit:resistance("mpSuckAttack")
         if (percent > 0) then
             local mana = math.min(data.targetUnit:mp(), data.damage)
             local val = mana * percent * 0.01
@@ -280,10 +290,11 @@ damageFlow:flux("mpSuckAttack", function(data)
 end)
 
 --- 技能吸魔;吸魔会根据伤害，扣减目标的魔法值，再据百分比增加自己的魔法值;目标魔法值不足 1 从而吸收时，则无法吸取
+---@param data {sourceUnit:Unit}
 damageFlow:flux("mpSuckAbility", function(data)
-    local approve = (nil ~= data.sourceUnit and data.damageSrc == injury.damageSrc.ability and data.sourceUnit:mp() > 0 and data.targetUnit:mpCur() > 0)
+    local approve = (data.sourceUnit ~= nil and data.damageSrc == injury.damageSrc.ability and data.sourceUnit:mp() > 0 and data.targetUnit:mpCur() > 0)
     if (approve) then
-        local percent = data.sourceUnit:mpSuckAbility() - data.targetUnit:resistance("mpSuckAbility")
+        local percent = (data.sourceUnit:get("mpSuckAbility") or 0) - data.targetUnit:resistance("mpSuckAbility")
         if (percent > 0) then
             local mana = math.min(data.targetUnit:mp(), data.damage)
             local val = mana * percent * 0.01
@@ -302,7 +313,7 @@ end)
 ---@param data {targetUnit:Unit,sourceUnit:Unit}
 damageFlow:flux("enchant", function(data)
     local percent = 0
-    if (nil ~= data.sourceUnit) then
+    if (data.sourceUnit ~= nil) then
         local amplify = data.sourceUnit:enchantStrengthen(data.damageType.value)
         if (amplify ~= 0) then
             percent = percent + amplify
@@ -312,13 +323,13 @@ damageFlow:flux("enchant", function(data)
     if (resistance ~= 0) then
         percent = percent - resistance
     end
-    if (nil ~= data.sourceUnit) then
+    if (data.sourceUnit ~= nil) then
         local mystery = data.sourceUnit:enchantMystery() * 0.01 + 1
         mystery = math.max(0, mystery)
         percent = percent * mystery
     end
     --- 触发附魔事件
-    event.syncTrigger(data.targetUnit, eventKind.unitEnchant, { sourceUnit = data.targetUnit, enchantType = data.damageType, percent = percent })
+    event.syncTrigger(data.targetUnit, eventKind.unitEnchant, { sourceUnit = data.sourceUnit, enchantType = data.damageType, percent = percent })
     if (data.damageType ~= injury.damageType.common) then
         -- 一般设定攻击技能物品来源可触发附魔，禁止反应式伤害再触发
         if (data.damageSrc == injury.damageSrc.attack or data.damageSrc == injury.damageSrc.ability or data.damageSrc == injury.damageSrc.item) then

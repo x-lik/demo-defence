@@ -5,7 +5,7 @@ monitor.create(
     0.2,
     function(obj)
         local regen = 0.2 * obj:hpRegen()
-        local cure = obj:cure() * 0.01
+        local cure = (obj:get("cure") or 0) * 0.01
         local v = 0
         if (regen >= 0) then
             v = math.max(0, 1 + cure) * regen
@@ -26,7 +26,7 @@ monitor.create(
     0.3,
     function(obj)
         local regen = 0.3 * obj:mpRegen()
-        local cure = obj:cure() * 0.01
+        local cure = (obj:get("cure") or 0) * 0.01
         local v = 0
         if (regen >= 0) then
             v = math.max(0, 1 + cure) * regen
