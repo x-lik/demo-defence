@@ -191,13 +191,22 @@ function process:onStart()
             if (u:owner():isComputer()) then
                 return
             end
-            print("name", u:name())
             u:position(b.room[1], b.room[2])
             u:facing(b.room[3])
             camera.to(b.room[1], b.room[2], 0)
         end)
         bubble["r:" .. i] = r
     end
+    
+    -- -hg回城
+    player.onChat("-hg", function(evtData)
+        local idx = evtData.triggerPlayer:index()
+        ---@type Unit
+        local hero = bubble["hero" .. idx]
+        hero:position(0, -2300)
+        hero:facing(270)
+        camera.to(0, -2300, 0)
+    end)
 end
 
 function process:onOver()
