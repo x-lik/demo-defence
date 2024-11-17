@@ -153,14 +153,40 @@ function process:onStart()
         end
     end)
     
-    -- 刷怪地点
-    local fresh = {
-        { -2270, 2221, 180 },
-        { 2426, 2178, 0 },
+    -- 2个刷资源地点
+    local brushes = {
+        {
+            region = { "刷经验", -800, -1759, 150, "ReplaceableTextures\\Splats\\FlameStrike2.blp" },
+            room = { -2270, 2221, 180 },
+        },
+        {
+            region = { "刷金币", 800, -1759, 150, "ReplaceableTextures\\Splats\\DarkSummonSpecial.blp" },
+            room = { 2426, 2178, 0 },
+        }
     }
+    for i, b in ipairs(brushes) do
+        bubble["ttg" .. i] = ttg.permanent(b.region[2], b.region[3], b.region[1], { zOffset = 150 })
+        local r = Region(b.region[1], "square", b.region[2], b.region[3], b.region[4], b.region[4])
+        r:splat(b.region[5], 200)
+        ---@param evtData eventOnRegionEnter
+        r:onEvent(eventKind.regionEnter, function(evtData)
+            local u = evtData.triggerUnit
+            if (u:owner():isComputer()) then
+                return
+            end
+            print("name", u:name())
+            u:position(b.room[1], b.room[2])
+            u:facing(b.room[3])
+            camera.to(b.room[1], b.room[2], 0)
+        end)
+        bubble["r:" .. i] = r
+    end
 end
 
 function process:onOver()
     sound.bgmStop()
     UIText("monTimer"):text("")
+    local bubble = self:bubble()
+    ttg.destroy(bubble["ttg1"])
+    ttg.destroy(bubble["ttg2"])
 end
