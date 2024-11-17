@@ -67,10 +67,6 @@ function process:onStart()
                     avatar:texture(icon)
                 end)
             end)
-            ---@param evtData eventOnUnitKill
-            u:onEvent(eventKind.unitKill, "heroKill", function(evtData)
-                evtData.triggerUnit:exp("+=30")
-            end)
             ---@param evtData eventOnUnitLevelChange
             u:onEvent(eventKind.unitLevelChange, "heroLevelUp", function(evtData)
                 local diff = evtData.new - evtData.old
@@ -127,6 +123,7 @@ function process:onStart()
             end
             for _, p in ipairs(points) do
                 local u = Unit(enemyTeam, TPL_UNIT.Empty, p[1], p[2], p[3])
+                u._kind = "路线进攻"
                 u:orderAttack(0, -2496)
                 u:hp("+=" .. cur)
                 u:attack("+=" .. cur / 3)
@@ -139,18 +136,6 @@ function process:onStart()
         :fontSize(12)
     bubble.uiTimer = time.setInterval(1, function()
         ui:text("第" .. cur .. "波：" .. math.floor(bubble.monTimer:remain()))
-    end)
-    
-    -- 敌人掉落
-    local dropList = { TPL_ITEM["短剑"], TPL_ITEM["木盾"] }
-    ---@param evtData eventOnUnitDead
-    event.syncRegister(UnitClass, eventKind.unitDead, "enemyDrop", function(evtData)
-        local tu = evtData.triggerUnit
-        if (enemyTeam:is(tu) and math.rand(1, 10) == 3) then
-            local x, y = tu:x(), tu:y()
-            local it = Item(table.rand(dropList, 1))
-            it:position(x, y)
-        end
     end)
     
     for _ = 1, 3 do
@@ -173,27 +158,84 @@ function process:onStart()
     -- 2个刷资源地点
     local brushes = {
         {
-            region = { "刷经验", -800, -1800, 150, "ReplaceableTextures\\Splats\\FlameStrike2.blp" },
+            name = "刷经验",
+            region = { -800, -1800, 150, "ReplaceableTextures\\Splats\\FlameStrike2.blp" },
             room = { -2270, 2221, 180 },
+            p_num = 0,
+            e_num = 0,
         },
         {
-            region = { "刷金币", 800, -1800, 150, "ReplaceableTextures\\Splats\\DarkSummonSpecial.blp" },
+            name = "刷金币",
+            region = { 800, -1800, 150, "ReplaceableTextures\\Splats\\DarkSummonSpecial.blp" },
             room = { 2426, 2178, 0 },
+            p_num = 0,
+            e_num = 0,
         }
     }
+    -- 刷怪
+    local toBrushes = function(hero, brush)
+        local room = brush.room
+        hero:position(room[1], room[2])
+        hero:facing(room[3])
+        camera.to(room[1], room[2], 0)
+        hero._brush = brush
+        brush.p_num = brush.p_num + 1
+        if (nil == brush.timer) then
+            brush.timer = time.setInterval(2, function()
+                if (brush.e_num <= 0) then
+                    brush.e_num = brush.e_num + 5
+                    for _ = 1, 5 do
+                        local u = Unit(enemyTeam, TPL_UNIT.Empty, room[1], room[2], 270)
+                        u._kind = brush.name
+                        u:hp(10)
+                        u:attack(10)
+                    end
+                end
+            end)
+        end
+    end
+    
+    -- 敌人奖励
+    local dropList = { TPL_ITEM["短剑"], TPL_ITEM["木盾"] }
+    ---@param evtData eventOnUnitDead
+    event.syncRegister(UnitClass, eventKind.unitDead, "enemyDrop", function(evtData)
+        local tu = evtData.triggerUnit
+        if (enemyTeam:is(tu)) then
+            if (tu._kind == "路线进攻") then
+                if (evtData.killerUnit) then
+                    evtData.killerUnit:exp("+=30")
+                end
+                if (math.rand(1, 10) == 3) then
+                    local x, y = tu:x(), tu:y()
+                    local it = Item(table.rand(dropList, 1))
+                    it:position(x, y)
+                end
+            elseif (tu._kind == "刷金币") then
+                brushes[2].e_num = brushes[2].e_num - 1
+                if (evtData.killerUnit) then
+                    evtData.killerUnit:owner():worth("+", { gold = 1 })  -- 未显示
+                end
+            elseif (tu._kind == "刷经验") then
+                brushes[1].e_num = brushes[1].e_num - 1
+                if (evtData.killerUnit) then
+                    evtData.killerUnit:exp("+=100")
+                end
+            end
+        end
+    end)
+    
+    -- 入口
     for i, b in ipairs(brushes) do
-        bubble["ttg" .. i] = ttg.permanent(b.region[2], b.region[3], b.region[1], { zOffset = 150 })
-        local r = Region(b.region[1], "square", b.region[2], b.region[3], b.region[4], b.region[4])
-        r:splat(b.region[5], 200)
+        bubble["ttg" .. i] = ttg.permanent(b.region[1], b.region[2], b.name, { zOffset = 150 })
+        local r = Region(b.name, "square", b.region[1], b.region[2], b.region[3], b.region[3])
+        r:splat(b.region[4], 200)
         ---@param evtData eventOnRegionEnter
         r:onEvent(eventKind.regionEnter, function(evtData)
             local u = evtData.triggerUnit
             if (u:owner():isComputer()) then
                 return
             end
-            u:position(b.room[1], b.room[2])
-            u:facing(b.room[3])
-            camera.to(b.room[1], b.room[2], 0)
+            toBrushes(u, b)
         end)
         bubble["r:" .. i] = r
     end
@@ -206,6 +248,15 @@ function process:onStart()
         hero:position(0, -2300)
         hero:facing(270)
         camera.to(0, -2300, 0)
+        local brush = hero._brush
+        if (nil ~= brush) then
+            hero._brush = nil
+            brush.p_num = brush.p_num - 1
+            if (brush.p_num <= 0) then
+                class.destroy(brush.timer)
+                brush.timer = nil
+            end
+        end
     end)
 end
 
