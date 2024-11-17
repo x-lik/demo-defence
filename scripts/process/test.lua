@@ -153,14 +153,31 @@ function process:onStart()
         end
     end)
     
+    for _ = 1, 3 do
+        local it = Item(TPL_ITEM["短剑"])
+        it:position(0, -1900)
+    end
+    for _ = 1, 3 do
+        local it = Item(TPL_ITEM["木盾"])
+        it:position(0, -1900)
+    end
+    
+    -- 物品合成（假如存在）
+    if (fusion) then
+        ---@param evtData eventOnUnitItemGet
+        event.syncRegister(UnitClass, eventKind.unitItemGet, "fusion", function(evtData)
+            fusion.conflate(evtData.triggerUnit, evtData.triggerItem)
+        end)
+    end
+    
     -- 2个刷资源地点
     local brushes = {
         {
-            region = { "刷经验", -800, -1759, 150, "ReplaceableTextures\\Splats\\FlameStrike2.blp" },
+            region = { "刷经验", -800, -1800, 150, "ReplaceableTextures\\Splats\\FlameStrike2.blp" },
             room = { -2270, 2221, 180 },
         },
         {
-            region = { "刷金币", 800, -1759, 150, "ReplaceableTextures\\Splats\\DarkSummonSpecial.blp" },
+            region = { "刷金币", 800, -1800, 150, "ReplaceableTextures\\Splats\\DarkSummonSpecial.blp" },
             room = { 2426, 2178, 0 },
         }
     }
