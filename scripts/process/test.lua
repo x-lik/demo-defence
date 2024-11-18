@@ -94,7 +94,7 @@ function process:onStart()
     enemyTeam:members({ 10, 11, 12 })
     local cur = 1 -- 当前波
     local wave = 100 -- 100波
-    local period = 30 -- 初始周期
+    local period = 50 -- 初始周期
     local per = 1 -- 每波缩短周期
     local min = 15 -- 最小周期
     local qty = 6 -- 每地点出怪数量
@@ -138,11 +138,11 @@ function process:onStart()
         ui:text("第" .. cur .. "波：" .. math.floor(bubble.monTimer:remain()))
     end)
     
-    for _ = 1, 3 do
+    for _ = 1, 7 do
         local it = Item(TPL_ITEM["短剑"])
         it:position(0, -1900)
     end
-    for _ = 1, 3 do
+    for _ = 1, 7 do
         local it = Item(TPL_ITEM["木盾"])
         it:position(0, -1900)
     end
@@ -150,7 +150,7 @@ function process:onStart()
     -- 物品合成（假如存在）
     if (fusion) then
         ---@param evtData eventOnUnitItemGet
-        event.syncRegister(UnitClass, eventKind.unitItemGet, "fusion", function(evtData)
+        event.syncRegister(UnitClass, eventKind.unitItemPick, "fusion", function(evtData)
             fusion.conflate(evtData.triggerUnit, evtData.triggerItem)
         end)
     end
@@ -172,7 +172,7 @@ function process:onStart()
             e_num = 0,
         }
     }
-    -- 刷怪
+    -- 资源区刷怪
     local toBrushes = function(hero, brush)
         local room = brush.room
         hero:position(room[1], room[2])
