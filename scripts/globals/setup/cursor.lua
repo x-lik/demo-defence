@@ -38,7 +38,7 @@ game.onPhase("process", function()
         local tx, ty = -1, -1
         local tips, textAlign
         local fontSize = 9
-        if (nil ~= class._cache[GridClass] and nil ~= class._cache[GridClass][ItemClass]) then
+        if (isGrid(ItemClass)) then
             --- Prioritize search Item
             under = Grid(ItemClass):closest({
                 circle = {
