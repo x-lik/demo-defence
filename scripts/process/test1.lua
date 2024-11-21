@@ -1,4 +1,4 @@
-local process = Process("test")
+local process = Process("test1")
 
 function process:onStart()
     
@@ -17,16 +17,6 @@ function process:onStart()
             Player(i):quit(tips)
         end
     end)
-    
-    -- 获取路径的后缀名
-    local function ext(path)
-        local idx = string.find(path, "%.", nil)
-        if idx then
-            return string.sub(path, idx)
-        else
-            return ""
-        end
-    end
     
     --- 为玩家生成英雄
     local avatar = UIBackdrop("avatar", UIGame)
@@ -54,10 +44,7 @@ function process:onStart()
             u:onEvent(eventKind.unitFeignDead, "heroDead", function(evtData)
                 async.loc(function()
                     local icon = evtData.triggerUnit:icon()
-                    if (ext(icon) == ".blp") then
-                        icon = string.gsub(icon, "CommandButtons\\BTN", "CommandButtonsDisabled\\DISBTN", 1)
-                        avatar:texture(icon)
-                    end
+                    avatar:texture(slk.disIconPath(icon))
                 end)
             end)
             ---@param evtData eventOnUnitReborn
@@ -229,8 +216,7 @@ function process:onStart()
         bubble["ttg" .. i] = ttg.permanent(b.region[1], b.region[2], b.name, { zOffset = 150 })
         local r = Region(b.name, "square", b.region[1], b.region[2], b.region[3], b.region[3])
         r:splat(b.region[4], 200)
-        ---@param evtData eventOnRegionEnter
-        r:onEvent(eventKind.regionEnter, function(evtData)
+        r:onEnter(function(evtData)
             local u = evtData.triggerUnit
             if (u:owner():isComputer()) then
                 return
