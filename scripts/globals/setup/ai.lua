@@ -14,8 +14,8 @@ end)
 --- 到达后停顿3秒后再次移动
 AI("loiter"):behavior("idle", function(this, linkUnit)
     ---@param evtData eventOnUnitMoveStop
-    linkUnit:onEvent(eventKind.unitMoveStop, "loiter", function(evtData)
-        linkUnit:onEvent(eventKind.unitMoveStop, "loiter", nil)
+    linkUnit:onEvent("unitMoveStop", "loiter", function(evtData)
+        linkUnit:onEvent("unitMoveStop", "loiter", nil)
         time.setTimeout(3, function()
             this:action("idle", evtData.triggerUnit)
         end)

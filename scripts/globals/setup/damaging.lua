@@ -74,8 +74,8 @@ damageFlow:flux("shield", function(data)
         end
         if (sd > 0) then
             data.targetUnit:shieldCur("-=" .. sd)
-            event.syncTrigger(data.targetUnit, eventKind.unitBeShield, { sourceUnit = data.sourceUnit, value = sd })
-            event.syncTrigger(data.sourceUnit, eventKind.unitShield, { targetUnit = data.targetUnit, value = sd })
+            event.syncTrigger(data.targetUnit, "unitBeShield", { sourceUnit = data.sourceUnit, value = sd })
+            event.syncTrigger(data.sourceUnit, "unitShield", { targetUnit = data.targetUnit, value = sd })
         end
     end
 end)
@@ -103,8 +103,8 @@ damageFlow:flux("crit", function(data)
                 data.avoid = 0
                 --- 触发本体暴击
                 data.crit = true
-                event.syncTrigger(data.sourceUnit, eventKind.unitCrit, { targetUnit = data.targetUnit })
-                event.syncTrigger(data.targetUnit, eventKind.unitBeCrit, { sourceUnit = data.sourceUnit })
+                event.syncTrigger(data.sourceUnit, "unitCrit", { targetUnit = data.targetUnit })
+                event.syncTrigger(data.targetUnit, "unitBeCrit", { sourceUnit = data.sourceUnit })
             end
         end
     end
@@ -117,8 +117,8 @@ damageFlow:flux("avoid", function(data)
         if (data.avoid > math.rand(1, 100)) then
             -- 触发回避事件
             data.damage = 0
-            event.syncTrigger(data.targetUnit, eventKind.unitAvoid, { sourceUnit = data.sourceUnit })
-            event.syncTrigger(data.sourceUnit, eventKind.unitBeAvoid, { targetUnit = data.targetUnit })
+            event.syncTrigger(data.targetUnit, "unitAvoid", { sourceUnit = data.sourceUnit })
+            event.syncTrigger(data.sourceUnit, "unitBeAvoid", { targetUnit = data.targetUnit })
             return
         end
     end
@@ -216,7 +216,7 @@ damageFlow:flux("defend", function(data)
         if (data.damage < 1) then
             -- 触发防御完全抵消事件
             data.damage = 0
-            event.syncTrigger(data.targetUnit, eventKind.unitImmuneDefend, { sourceUnit = data.sourceUnit })
+            event.syncTrigger(data.targetUnit, "unitImmuneDefend", { sourceUnit = data.sourceUnit })
             return
         end
     end
@@ -231,7 +231,7 @@ damageFlow:flux("hurtReduction", function(data)
         if (data.damage < 1) then
             -- 触发减伤完全抵消事件
             data.damage = 0
-            event.syncTrigger(data.targetUnit, eventKind.unitImmuneReduction, { sourceUnit = data.sourceUnit })
+            event.syncTrigger(data.targetUnit, "unitImmuneReduction", { sourceUnit = data.sourceUnit })
             return
         end
     end
@@ -247,8 +247,8 @@ damageFlow:flux("hpSuckAttack", function(data)
         if (percent > 0 and val > 0) then
             data.sourceUnit:hpCur("+=" .. val)
             --- 触发吸血事件
-            event.syncTrigger(data.sourceUnit, eventKind.unitHPSuckAttack, { targetUnit = data.targetUnit, value = val, percent = percent })
-            event.syncTrigger(data.targetUnit, eventKind.unitBeHPSuckAttack, { sourceUnit = data.sourceUnit, value = val, percent = percent })
+            event.syncTrigger(data.sourceUnit, "unitHPSuckAttack", { targetUnit = data.targetUnit, value = val, percent = percent })
+            event.syncTrigger(data.targetUnit, "unitBeHPSuckAttack", { sourceUnit = data.sourceUnit, value = val, percent = percent })
         end
     end
 end)
@@ -263,8 +263,8 @@ damageFlow:flux("hpSuckAbility", function(data)
         if (percent > 0 and val > 0) then
             data.sourceUnit:hpCur("+=" .. val)
             --- 触发技能吸血事件
-            event.syncTrigger(data.sourceUnit, eventKind.unitHPSuckAbility, { targetUnit = data.targetUnit, value = val, percent = percent })
-            event.syncTrigger(data.targetUnit, eventKind.unitBeHPSuckAbility, { sourceUnit = data.sourceUnit, value = val, percent = percent })
+            event.syncTrigger(data.sourceUnit, "unitHPSuckAbility", { targetUnit = data.targetUnit, value = val, percent = percent })
+            event.syncTrigger(data.targetUnit, "unitBeHPSuckAbility", { sourceUnit = data.sourceUnit, value = val, percent = percent })
         end
     end
 end)
@@ -282,8 +282,8 @@ damageFlow:flux("mpSuckAttack", function(data)
                 data.targetUnit:mpCur("-=" .. val)
                 data.sourceUnit:mpCur("+=" .. val)
                 --- 触发吸魔事件
-                event.syncTrigger(data.sourceUnit, eventKind.unitMPSuckAttack, { targetUnit = data.targetUnit, value = val, percent = percent })
-                event.syncTrigger(data.targetUnit, eventKind.unitBeMPSuckAttack, { sourceUnit = data.sourceUnit, value = val, percent = percent })
+                event.syncTrigger(data.sourceUnit, "unitMPSuckAttack", { targetUnit = data.targetUnit, value = val, percent = percent })
+                event.syncTrigger(data.targetUnit, "unitBeMPSuckAttack", { sourceUnit = data.sourceUnit, value = val, percent = percent })
             end
         end
     end
@@ -302,8 +302,8 @@ damageFlow:flux("mpSuckAbility", function(data)
                 data.targetUnit:mpCur("-=" .. val)
                 data.sourceUnit:mpCur("+=" .. val)
                 --- 触发技能吸魔事件
-                event.syncTrigger(data.sourceUnit, eventKind.unitMPSuckAbility, { targetUnit = data.targetUnit, value = val, percent = percent })
-                event.syncTrigger(data.targetUnit, eventKind.unitBeMPSuckAbility, { sourceUnit = data.sourceUnit, value = val, percent = percent })
+                event.syncTrigger(data.sourceUnit, "unitMPSuckAbility", { targetUnit = data.targetUnit, value = val, percent = percent })
+                event.syncTrigger(data.targetUnit, "unitBeMPSuckAbility", { sourceUnit = data.sourceUnit, value = val, percent = percent })
             end
         end
     end

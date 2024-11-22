@@ -5,11 +5,11 @@ local function _z(u, offset)
 end
 
 ---@param evtData eventOnUnitCrit
-event.syncRegister(UnitClass, eventKind.unitCrit, function(evtData)
+event.syncRegister(UnitClass, "unitCrit", function(evtData)
     effector.attach(evtData.targetUnit, "lk_crit", "origin", 0.5)
 end)
 ---@param evtData eventOnUnitCritAbility
-event.syncRegister(UnitClass, eventKind.unitCritAbility, function(evtData)
+event.syncRegister(UnitClass, "unitCritAbility", function(evtData)
     effector.attach(evtData.targetUnit, "lk_crit_ability", "origin", 0.5)
     mtg.model({
         model = "lk_ttg_crit",
@@ -23,11 +23,11 @@ event.syncRegister(UnitClass, eventKind.unitCritAbility, function(evtData)
     })
 end)
 ---@param evtData eventOnUnitAvoid
-event.syncRegister(UnitClass, eventKind.unitAvoid, function(evtData)
+event.syncRegister(UnitClass, "unitAvoid", function(evtData)
     effector.attach(evtData.triggerUnit, "lk_ttg_avoid", "overhead", 0.3)
 end)
 ---@param evtData eventOnUnitImmuneInvincible
-event.syncRegister(UnitClass, eventKind.unitImmuneInvincible, function(evtData)
+event.syncRegister(UnitClass, "unitImmuneInvincible", function(evtData)
     effector.attach(evtData.triggerUnit, "DivineShieldTarget", "origin", 1)
     mtg.model({
         model = "lk_ttg_immune_invincible",
@@ -40,7 +40,7 @@ event.syncRegister(UnitClass, eventKind.unitImmuneInvincible, function(evtData)
     })
 end)
 ---@param evtData eventOnUnitImmuneDefend
-event.syncRegister(UnitClass, eventKind.unitImmuneDefend, function(evtData)
+event.syncRegister(UnitClass, "unitImmuneDefend", function(evtData)
     mtg.model({
         model = "lk_ttg_immune_damage",
         size = 0.7,
@@ -52,7 +52,7 @@ event.syncRegister(UnitClass, eventKind.unitImmuneDefend, function(evtData)
     })
 end)
 ---@param evtData eventOnUnitImmuneReduction
-event.syncRegister(UnitClass, eventKind.unitImmuneReduction, function(evtData)
+event.syncRegister(UnitClass, "unitImmuneReduction", function(evtData)
     mtg.model({
         model = "lk_ttg_immune_damage",
         size = 0.7,
@@ -64,7 +64,7 @@ event.syncRegister(UnitClass, eventKind.unitImmuneReduction, function(evtData)
     })
 end)
 ---@param evtData eventOnUnitImmuneEnchant
-event.syncRegister(UnitClass, eventKind.unitImmuneEnchant, function(evtData)
+event.syncRegister(UnitClass, "unitImmuneEnchant", function(evtData)
     mtg.model({
         model = "lk_ttg_immune_enchant",
         size = 0.7,
@@ -76,35 +76,35 @@ event.syncRegister(UnitClass, eventKind.unitImmuneEnchant, function(evtData)
     })
 end)
 ---@param evtData eventOnUnitHPSuckAttack
-event.syncRegister(UnitClass, eventKind.unitHPSuckAttack, function(evtData)
+event.syncRegister(UnitClass, "unitHPSuckAttack", function(evtData)
     effector.attach(evtData.triggerUnit, "HealTarget2", "origin", 0.5)
 end)
 ---@param evtData eventOnUnitHPSuckAbility
-event.syncRegister(UnitClass, eventKind.unitHPSuckAbility, function(evtData)
+event.syncRegister(UnitClass, "unitHPSuckAbility", function(evtData)
     effector.attach(evtData.triggerUnit, "HealTarget2", "origin", 0.5)
 end)
 ---@param evtData eventOnUnitMPSuckAttack
-event.syncRegister(UnitClass, eventKind.unitMPSuckAttack, function(evtData)
+event.syncRegister(UnitClass, "unitMPSuckAttack", function(evtData)
     effector.attach(evtData.triggerUnit, "AImaTarget", "origin", 0.5)
 end)
 ---@param evtData eventOnUnitMPSuckAbility
-event.syncRegister(UnitClass, eventKind.unitMPSuckAbility, function(evtData)
+event.syncRegister(UnitClass, "unitMPSuckAbility", function(evtData)
     effector.attach(evtData.triggerUnit, "AImaTarget", "origin", 0.5)
 end)
 ---@param evtData eventOnUnitBeStun
-event.syncRegister(UnitClass, eventKind.unitBeStun, function(evtData)
+event.syncRegister(UnitClass, "unitBeStun", function(evtData)
     effector.attach(evtData.triggerUnit, "ThunderclapTarget", "overhead", evtData.duration)
 end)
 ---@param evtData eventOnUnitBeSplit
-event.syncRegister(UnitClass, eventKind.unitBeSplit, function(evtData)
+event.syncRegister(UnitClass, "unitBeSplit", function(evtData)
     effector.unit("SpellBreakerAttack", evtData.triggerUnit, 0)
 end)
 ---@param evtData eventOnUnitBeSplitSpread
-event.syncRegister(UnitClass, eventKind.unitBeSplitSpread, function(evtData)
+event.syncRegister(UnitClass, "unitBeSplitSpread", function(evtData)
     effector.unit("CleaveDamageTarget", evtData.triggerUnit, 0)
 end)
 ---@param evtData eventOnUnitBeShield
-event.syncRegister(UnitClass, eventKind.unitBeShield, function(evtData)
+event.syncRegister(UnitClass, "unitBeShield", function(evtData)
     local u = evtData.triggerUnit
     mtg.word({
         style = "default",
