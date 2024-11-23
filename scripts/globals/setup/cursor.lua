@@ -65,7 +65,7 @@ game.onPhase("process", function()
         end
         if (nil == under) then
             --- Then look for the Unit
-            under = class.h2o(japi.DZ_GetUnitUnderMouse())
+            under = class.h2u(japi.DZ_GetUnitUnderMouse())
             if (class.isObject(under, UnitClass)) then
                 if (under:owner() ~= evtData.triggerPlayer and false == under:isEnemy(evtData.triggerPlayer)) then
                     tx, ty = japi.UIDisAdaptive(evtData.rx), evtData.ry + 0.024
