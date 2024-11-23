@@ -553,7 +553,8 @@ game.onPhase("process", function()
                 x = japi.DZ_GetMouseTerrainX(),
                 y = japi.DZ_GetMouseTerrainY(),
             }
-            if (ab:isBanCursor(cond)) then
+            local ccr = ab:cursorCondResult(cond)
+            if (0 ~= ccr) then
                 alerter.message(evtData.triggerPlayer, "无效目标")
                 return
             end
@@ -685,8 +686,9 @@ game.onPhase("process", function()
                     end
                 end
             end
+            local ccr = ab:cursorCondResult({ x = tx, y = ty, radius = curSize, units = newUnits })
             local texture
-            if (ab:isBanCursor({ x = tx, y = ty, radius = curSize, units = newUnits })) then
+            if (0 ~= ccr) then
                 texture = circleParams.disable or circleParams.enable
             else
                 texture = circleParams.enable
@@ -732,7 +734,8 @@ game.onPhase("process", function()
                 radius = _int1 or ab:castRadius(),
                 units = _unit1,
             }
-            if (ab:isBanCursor(cond)) then
+            local ccr = ab:cursorCondResult(cond)
+            if (0 ~= ccr) then
                 alerter.message(evtData.triggerPlayer, "无效范围")
                 return
             end
@@ -855,8 +858,9 @@ game.onPhase("process", function()
                     end
                 end
             end
+            local ccr = ab:cursorCondResult({ x = tx, y = ty, width = curWidth, height = curHeight, units = newUnits })
             local texture
-            if (ab:isBanCursor({ x = tx, y = ty, width = curWidth, height = curHeight, units = newUnits })) then
+            if (0 ~= ccr) then
                 texture = csTexture.square.disable or csTexture.square.enable
             else
                 texture = csTexture.square.enable
@@ -912,7 +916,8 @@ game.onPhase("process", function()
                 cond.height = ab:castHeight()
                 cond.width = ab:castWidth()
             end
-            if (ab:isBanCursor(cond)) then
+            local ccr = ab:cursorCondResult(cond)
+            if (0 ~= ccr) then
                 alerter.message(evtData.triggerPlayer, "无效范围")
                 return
             end
