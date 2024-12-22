@@ -1,5 +1,5 @@
 --- 玩家单位
-TPL_UNIT.Hero = UnitTpl("Beastmaster")
+TPL_UNIT.Hero = UnitTpl("Beastmaster", "avatar")
     :preAbility({ TPL_ABILITY.ZZJY })
     :name("兽王")
     :model("Rexxar")

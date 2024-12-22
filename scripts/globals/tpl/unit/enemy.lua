@@ -1,5 +1,5 @@
 --- 敌人单位
-TPL_UNIT.Empty = UnitTpl("Ghoul")
+TPL_UNIT.Empty = UnitTpl("Ghoul", "avatar")
     :name("食尸鬼")
     :model("Ghoul")
     :weaponSound("wood_bash_heavy")

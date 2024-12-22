@@ -50,7 +50,9 @@ assets_speech("HeroTaurenChieftain")
 --暗影猎手
 assets_speech("HeroShadowHunter")
 --兽王
-assets_speech("Beastmaster")
+assets_speech("Beastmaster", {
+    avatar = assets_speech_extra({ model = "Rexxar" })
+})
 --死骑
 assets_speech("HeroDeathKnight")
 --巫妖
@@ -106,13 +108,9 @@ assets_speech("FirePandarenBrewmaster")
 --农民
 assets_speech("Peasant")
 --步兵
-assets_speech("Footman", {
-    avatar = assets_speech_extra({ model = "Footman" })
-})
+assets_speech("Footman")
 --骑士
-assets_speech("Knight", {
-    avatar = assets_speech_extra({ model = "Knight" })
-})
+assets_speech("Knight")
 --矮人火枪手
 assets_speech("Rifleman")
 --迫击炮小队
@@ -188,7 +186,9 @@ assets_speech("Acolyte")
 --阴影
 assets_speech("Shade")
 --食尸鬼
-assets_speech("Ghoul")
+assets_speech("Ghoul", {
+    avatar = assets_speech_extra({ model = "Ghoul" })
+})
 --憎恶
 assets_speech("Abomination")
 --绞肉车
