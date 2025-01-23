@@ -932,7 +932,6 @@ game.onPhase("process", function()
     
     cursor.setQuote("drag", {
         start = function()
-            local data = cursor.currentData()
             local alpha = csTexture.drag.alpha
             local texture = csTexture.drag.normal
             local width = csTexture.drag.width
@@ -940,38 +939,14 @@ game.onPhase("process", function()
             csPointer:texture(texture)
             csPointer:alpha(alpha)
             csPointer:size(width, height)
-            ---@type UIDrag
-            local ui = data.ui
-            local a = ui:anchor()
-            local rx, ry = japi.MouseRX(), japi.MouseRY()
-            _float1 = rx - a[1]
-            _float2 = ry - a[2]
         end,
         over = function()
             csPointer:alpha(0)
-            abilityOver()
-            _float1 = nil
-            _float2 = nil
         end,
         ---@param evtData eventOnMouseMove
         refresh = function(evtData)
-            local data = cursor.currentData()
             local rx, ry = evtData.rx, evtData.ry
             csPointer:relation(UI_ALIGN_CENTER, UIGame, UI_ALIGN_LEFT_BOTTOM, japi.UIDisAdaptive(rx), ry)
-            ---@type UIDrag
-            local ui = data.ui
-            local a = ui:anchor()
-            local x = rx - _float1
-            local y = ry - _float2
-            local pt, pb, pl, pr = ui._paddingTop, ui._paddingBottom, ui._paddingLeft, ui._paddingRight
-            x = math.max(x, a[3] / 2 + pl)
-            x = math.min(x, 0.8 - a[3] / 2 - pr)
-            y = math.max(y, a[4] / 2 + pb)
-            y = math.min(y, 0.6 - a[4] / 2 - pt)
-            local h = ui:handle()
-            japi.DZ_FrameClearAllPoints(h)
-            japi.DZ_FrameSetPoint(h, UI_ALIGN_CENTER, UIGame:handle(), UI_ALIGN_LEFT_BOTTOM, x, y)
-            ui:releaseXY(x, y)
         end,
     })
     
