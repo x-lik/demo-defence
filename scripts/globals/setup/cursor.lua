@@ -142,9 +142,7 @@ game.onPhase("process", function()
     }
     
     -- 设定一些值供临时使用
-    local _int1, _bool1, _timer1
-    local _float1, _float2
-    local _unitU, _unit1
+    local _int1, _bool1, _timer1, _unitU, _unit1
     
     ---@param ab Ability
     ---@return boolean
@@ -939,14 +937,21 @@ game.onPhase("process", function()
             csPointer:texture(texture)
             csPointer:alpha(alpha)
             csPointer:size(width, height)
+            local data = cursor.currentData()
+            if (data.ui) then
+                japi.DZ_FrameSetAlpha(data.ui._handle, data.ui._alpha * 0.8)
+            end
         end,
         over = function()
             csPointer:alpha(0)
+            local data = cursor.currentData()
+            if (data.ui) then
+                japi.DZ_FrameSetAlpha(data.ui._handle, data.ui._alpha)
+            end
         end,
         ---@param evtData eventOnMouseMove
         refresh = function(evtData)
-            local rx, ry = evtData.rx, evtData.ry
-            csPointer:relation(UI_ALIGN_CENTER, UIGame, UI_ALIGN_LEFT_BOTTOM, japi.UIDisAdaptive(rx), ry)
+            csPointer:relation(UI_ALIGN_CENTER, UIGame, UI_ALIGN_LEFT_BOTTOM, japi.UIDisAdaptive(evtData.rx), evtData.ry)
         end,
     })
     
