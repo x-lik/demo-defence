@@ -135,10 +135,12 @@ function process:onStart()
     end
     
     -- 物品合成（假如存在）
-    ---@param evtData eventOnUnitItemGet
-    event.syncRegister(UnitClass, eventKind.unitItemPick, "fusion", function(evtData)
-        fusion.conflate(evtData.triggerUnit, evtData.triggerItem)
-    end)
+    if (fusion or fusion.conflate) then
+        ---@param evtData eventOnUnitItemGet
+        event.syncRegister(UnitClass, eventKind.unitItemPick, "fusion", function(evtData)
+            fusion.conflate(evtData.triggerUnit, evtData.triggerItem)
+        end)
+    end
     
     -- 2个刷资源地点
     local brushes = {
