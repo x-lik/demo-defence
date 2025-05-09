@@ -18,7 +18,7 @@ TPL_ITEM["合金盾"] = ItemTpl()
         { "defend", 20, 0 },
     })
 
-if (fusion or fusion.conflate) then
+if (fusion.conflate) then
     fusion.formula(TPL_ITEM["烈火剑"], TPL_ITEM["短剑"], TPL_ITEM["短剑"], TPL_ITEM["短剑"])
     fusion.formula(TPL_ITEM["合金盾"], TPL_ITEM["木盾"], TPL_ITEM["木盾"], TPL_ITEM["木盾"])
 end

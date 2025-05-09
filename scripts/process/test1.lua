@@ -135,7 +135,7 @@ function process:onStart()
     end
     
     -- 物品合成（假如存在）
-    if (fusion or fusion.conflate) then
+    if (fusion.conflate) then
         ---@param evtData eventOnUnitItemGet
         event.syncRegister(UnitClass, eventKind.unitItemPick, "fusion", function(evtData)
             fusion.conflate(evtData.triggerUnit, evtData.triggerItem)
