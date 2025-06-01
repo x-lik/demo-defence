@@ -33,7 +33,7 @@ function process:onStart()
             end
         end)
     async.loc(function()
-        avatar:texture(bubble["hero" .. player.localIndex]:icon())
+        avatar:texture(bubble["hero" .. PlayerLocal():index()]:icon())
     end)
     for i = 1, 4, 1 do
         local p = Player(i)
