@@ -9,7 +9,12 @@ end)
 damageFlow:flux("prop", function(data)
     data.defend = data.targetUnit:get("defend") or 0
     data.avoid = data.targetUnit:get("avoid") or 0
-    if (class.isObject(data.sourceUnit, UnitClass)) then
+    data.isCrit = type(data.extra) == "table" and true == data.extra._isCrit
+    --- 自身暴击型攻击跳过回避
+    if (data.isCrit) then
+        data.avoid = 0
+    end
+    if (data.avoid > 0 and class.isObject(data.sourceUnit, UnitClass)) then
         data.avoid = data.avoid - (data.sourceUnit:get("aim") or 0)
     end
 end)
@@ -86,27 +91,6 @@ damageFlow:flux("hurtIncrease", function(data)
     local hurtIncrease = data.targetUnit:get("hurtIncrease") or 0
     if (hurtIncrease > 0) then
         data.damage = data.damage * (1 + hurtIncrease * 0.01)
-    end
-end)
-
---- 自身暴击
----@param data {sourceUnit:Unit}
-damageFlow:flux("crit", function(data)
-    local approve = (data.sourceUnit ~= nil and (data.damageSrc == injury.damageSrc.attack))
-    if (approve) then
-        local crit = data.sourceUnit:get("crit") or 0
-        if (crit > 0) then
-            local odds = data.sourceUnit:odds("crit") - data.targetUnit:resistance("crit")
-            if (odds > math.rand(1, 100)) then
-                data.damage = data.damage * (1 + crit * 0.01)
-                --- 触发时自动无视回避
-                data.avoid = 0
-                --- 触发本体暴击
-                data.crit = true
-                event.syncTrigger(data.sourceUnit, "unitCrit", { targetUnit = data.targetUnit })
-                event.syncTrigger(data.targetUnit, "unitBeCrit", { sourceUnit = data.sourceUnit })
-            end
-        end
     end
 end)
 

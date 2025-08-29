@@ -22,12 +22,16 @@ TPL_ABILITY.ZZJY = AbilityTpl()
             ---@param buffObj Unit
             purpose = function(buffObj)
                 effector.attach(buffObj, "DivineShieldTarget", "origin", -1)
-                buffObj:hurtReduction("+=100"):hurtRebound("+=100"):odds("hurtRebound", "+=100")
+                buffObj:set("hurtReduction","+=100") -- or buffObj:hurtReduction("+=100")
+                buffObj:set("hurtRebound","+=100") -- or buffObj:hurtRebound("+=100")
+                buffObj:odds("hurtRebound", "+=100")
             end,
             ---@param buffObj Unit
             rollback = function(buffObj)
                 effector.detach(buffObj, "DivineShieldTarget")
-                buffObj:hurtReduction("-=100"):hurtRebound("-=100"):odds("hurtRebound", "-=100")
+                buffObj:set("hurtReduction","-=100") -- or buffObj:hurtReduction("-=100")
+                buffObj:set("hurtRebound","-=100") -- or buffObj:hurtRebound("-=100")
+                buffObj:odds("hurtRebound", "-=100")
             end,
         })
     end)

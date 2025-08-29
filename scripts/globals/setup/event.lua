@@ -122,7 +122,7 @@ end)
 event.syncRegister(UnitClass, eventKind.unitHurt, function(evtData)
     local str = math.format(evtData.damage, 0)
     local height = -50
-    if (true == evtData.crit) then
+    if (true == evtData.isCrit) then
         str = 'C' .. str
         height = 300
     end
