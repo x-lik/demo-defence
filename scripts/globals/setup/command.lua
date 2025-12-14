@@ -27,8 +27,8 @@ player.command("^-d [-+=]%d+$", function(evtData)
             end
             async.call(evtData.triggerPlayer, function()
                 camera.distance(distance)
+                print("视距已设置为：" .. camera.distance())
             end)
-            echo("视距已设置为：" .. camera.distance(), evtData.triggerPlayer)
         end
     end
 end)
